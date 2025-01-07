@@ -1,4 +1,4 @@
-# User Registration Endpoint Documentation
+# Uber Api Endpoint document
 
 ## Endpoint: `/users/register`
 

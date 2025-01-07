@@ -7,6 +7,14 @@ const connectToDb = require('./db/db')
 
 const userRoutes = require('./routes/user.routes')
 
+
+// Swagger dependencies
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+
+
+
+
 /*This one we are calling an connectToDb method from the db.js and 
 runing the function here */
 connectToDb();
@@ -16,8 +24,30 @@ app.use(express.json())
 app.use(express.urlencoded({extended : true}));
 
 
-app.use('/users',
-     userRoutes);
+
+// Swagger Configuration
+const swaggerOptions = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Uber API",
+        version: "1.0.0",
+        description: "API Documentation for Uber-like app",
+      },
+      servers: [
+        {
+          url: `http://localhost:${process.env.PORT}`, // Base URL for your API
+        },
+      ],
+    },
+    apis: ["./routes/*.js"], // Path to your route files with JSDoc comments
+  };
+  
+  const swaggerDocs = swaggerJsdoc(swaggerOptions);
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+
+app.use('/users', userRoutes);
 
 
 

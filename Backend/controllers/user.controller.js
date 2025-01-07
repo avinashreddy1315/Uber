@@ -1,6 +1,8 @@
 const userModel = require('../models/user.model');
 const userService = require('../services/user.service')
 const {validationResult} = require('express-validator')
+const BlacklistTokenModel = require('../models/blacklistToken.model');
+const blacklistTokenModel = require('../models/blacklistToken.model');
 
 
 
@@ -62,7 +64,8 @@ const loginUser = async (req, res, next) =>{
             return res.status(401).json({message: 'Invalid email or password'})
         }
 
-        let token =user.generateAuthToken();
+        const token =user.generateAuthToken();
+        res.cookie('token', token);
         return res.status(200).json({message: 'User Loggedin Succesfull', token, user})
 
     }catch(errro){
@@ -73,7 +76,43 @@ const loginUser = async (req, res, next) =>{
 
 
 
+const getUserProfile = async (req, res) =>{
+    try{
+        const userData = await userModel.findById(req.Id);
+        if (!userData) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json({userData});
+
+    }catch(error){
+        console.error(error);
+        return res.status(500).json({error : "Internal server error"})
+    }
+
+}
 
 
 
-module.exports={registerUser, loginUser}
+const logoutUser = async (req, res) =>{
+    
+    const token = req.headers.authorization?.split(' ')[1] || req.cookies.token;
+    try{
+        res.clearCookie('token');
+        await blacklistTokenModel.create({token});
+        return res.status(200).json({message: "Logged out"});
+
+    }catch(error){
+        console.error(error);
+        return res.status(501).json({message : "Internal server Error"})
+
+    }
+    
+
+}
+
+
+
+
+
+
+module.exports={registerUser, loginUser, getUserProfile, logoutUser}

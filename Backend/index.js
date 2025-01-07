@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
 const connectToDb = require('./db/db')
+const cookieParser = require('cookie-parser')
 
 const userRoutes = require('./routes/user.routes')
 
@@ -22,6 +23,7 @@ connectToDb();
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended : true}));
+app.use(cookieParser())
 
 
 
@@ -30,9 +32,9 @@ const swaggerOptions = {
     definition: {
       openapi: "3.0.0",
       info: {
-        title: "Uber API",
+        title: "Uber Backend API",
         version: "1.0.0",
-        description: "API Documentation for Uber-like app",
+        description: "API Documentation for Uber",
       },
       servers: [
         {

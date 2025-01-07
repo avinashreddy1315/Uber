@@ -157,3 +157,119 @@ Occurs when the server encounters an unexpected error.
     "error": "Internal server error"
 }
 ```
+
+---
+---
+
+
+# User Profile API
+
+This API endpoint retrieves the profile information of the authenticated user. A valid JWT token must be provided in the `Authorization` header.
+
+## Endpoint: `/users/userprofile`
+
+### Method: `GET`
+
+### Summary:
+Retrieve the profile information of the authenticated user.
+
+### Description:
+This endpoint allows an authenticated user to fetch their profile information. Authentication is handled via a JWT token passed in the `Authorization` header or as a cookie.
+
+### Authentication:
+- Type: Bearer Token (`JWT`)
+
+### Responses:
+
+#### 200 - Success
+The user profile data was retrieved successfully.
+
+**Example Response:**
+```json
+{
+    "userData": {
+        "fullname": {
+            "firstname": "Test",
+            "lastname": "2 unit"
+        },
+        "_id": "677d44f6b07b71ed606080fa",
+        "email": "test2@gmail.com",
+        "__v": 0
+    }
+}
+```
+
+### Validation Error (Status Code: 401)
+Occurs if invalid token , token not provided, if token expired
+
+#### Example Response:
+```json
+    {
+            "message": "Unauthorized",
+    }
+```
+
+### Internal Server Error (Status Code: 500)
+Occurs when the server encounters an unexpected error.
+
+#### Example Response:
+```json
+{
+    "error": "Internal server error"
+}
+```
+
+
+---
+---
+
+# User Logout API
+
+This API endpoint Logouts the user.
+
+## Endpoint: `/users/logout`
+
+### Method: `GET`
+
+### Summary:
+Logouts the user.
+
+### Description:
+This endpoint allows user to logout from the user and it will make the token to blacklist.
+
+### Authentication:
+- Type: Bearer Token (`JWT`)
+
+### Responses:
+
+#### 200 - Success
+The user Logged out succesfully.
+
+**Example Response:**
+```json
+{
+    "message" : "user Logged out succesfully"
+}
+```
+
+### Validation Error (Status Code: 401)
+Occurs if invalid token , token not provided, if token expired
+
+#### Example Response:
+```json
+    {
+            "message": "Unauthorized",
+    }
+```
+
+### Internal Server Error (Status Code: 500)
+Occurs when the server encounters an unexpected error.
+
+#### Example Response:
+```json
+{
+    "error": "Internal server error"
+}
+```
+
+

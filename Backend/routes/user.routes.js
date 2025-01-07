@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const userController = require("../controllers/user.controller");
+const verifyToken = require("../middleware/auth.middleware")
 
 /**
  * @swagger
@@ -213,5 +214,124 @@ router.post('/login',[
   body('email').isEmail().withMessage('Invalid Email'),
   body('password').isLength({min:6}).withMessage('Password must be at least 6 characters long')
 ], userController.loginUser);
+
+/**
+ * @swagger
+ * /userprofile:
+ *   get:
+ *     summary: Get user profile
+ *     description: This endpoint retrieves the profile information of the authenticated user. A valid JWT token must be provided in the Authorization header.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user profile data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userData:
+ *                   type: object
+ *                   properties:
+ *                     fullname:
+ *                       type: object
+ *                       properties:
+ *                         firstname:
+ *                           type: string
+ *                           example: Test
+ *                         lastname:
+ *                           type: string
+ *                           example: 2 unit
+ *                     _id:
+ *                       type: string
+ *                       example: 677d44f6b07b71ed606080fa
+ *                     email:
+ *                       type: string
+ *                       example: test2@gmail.com
+ *                     __v:
+ *                       type: integer
+ *                       example: 0
+ *       401:
+ *         description: Unauthorized. The token is missing, invalid, or expired.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+router.get('/userprofile', verifyToken, userController.getUserProfile);
+
+
+/**
+ * @swagger
+ * /users/logout:
+ *   get:
+ *     summary: Logout the user
+ *     description: This endpoint allows a user to logout. The token will be added to the blacklist to prevent further use.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: The user logged out successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "user Logged out succesfully"
+ *       401:
+ *         description: Unauthorized - Occurs if the token is invalid, not provided, or expired.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized"
+ *       500:
+ *         description: Internal server error - Occurs when the server encounters an unexpected error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
+
+router.get('/logout', userController.logoutUser)
 
 module.exports = router;

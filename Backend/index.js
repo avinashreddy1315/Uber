@@ -7,6 +7,7 @@ const connectToDb = require('./db/db')
 const cookieParser = require('cookie-parser')
 
 const userRoutes = require('./routes/user.routes')
+const captainRouter = require('./routes/captain.routes')
 
 
 // Swagger dependencies
@@ -50,6 +51,7 @@ const swaggerOptions = {
 
 
 app.use('/users', userRoutes);
+app.use('/captains', captainRouter)
 
 
 

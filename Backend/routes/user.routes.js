@@ -286,7 +286,7 @@ router.post('/login',[
  *                   example: Internal server error
  */
 
-router.get('/userprofile', verifyToken, userController.getUserProfile);
+router.get('/profile', verifyToken, userController.getUserProfile);
 
 
 /**

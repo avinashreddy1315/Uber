@@ -166,7 +166,7 @@ Occurs when the server encounters an unexpected error.
 
 This API endpoint retrieves the profile information of the authenticated user. A valid JWT token must be provided in the `Authorization` header.
 
-## Endpoint: `/users/userprofile`
+## Endpoint: `/users/profile`
 
 ### Method: `GET`
 

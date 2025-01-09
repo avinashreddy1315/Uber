@@ -1,5 +1,6 @@
 # Uber API Endpoint Documentation
 
+# i) User Api's
 ## Endpoint: `/users/register`
 
 ### Description
@@ -272,4 +273,378 @@ Occurs when the server encounters an unexpected error.
 }
 ```
 
+---
+---
+# ii) Captain Api's
+---
+
+# Captain Registration API
+
+This API endpoint is used to register a new captain. It accepts captain details such as their full name, email, password, and vehicle details, and creates a new captain in the database.
+
+## Endpoint
+
+`POST /captains/register`
+
+## Summary
+
+Registers a new captain in the system.
+
+## Request
+
+### Headers
+
+| Key             | Value             |
+|------------------|-------------------|
+| Content-Type     | application/json  |
+
+### Request Body
+
+The body of the request should contain the following fields:
+
+| Field            | Type   | Description                                   | Example                |
+|-------------------|--------|-----------------------------------------------|------------------------|
+| fullname          | object | The full name of the captain                 |                        |
+| fullname.firstname | string | The first name of the captain                | "John"                |
+| fullname.lastname  | string | The last name of the captain                 | "Doe"                 |
+| email             | string | The email address of the captain             | "john.doe@example.com" |
+| password          | string | The password for the captain                 | "12345667"            |
+| vehicle           | object | The details of the captain's vehicle         |                        |
+| vehicle.color      | string | The color of the vehicle                     | "red"                 |
+| vehicle.plate      | string | The license plate of the vehicle             | "456 987"             |
+| vehicle.capacity   | number | The number of passengers it can accommodate without the driver | 3                      |
+| vehicle.vehicletype| string | The type of the vehicle (e.g., car, auto, motorcycle) | "car"                 |
+
+### Example Request
+
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "12345667",
+  "vehicle": {
+    "color": "red",
+    "plate": "456 987",
+    "capacity": 3,
+    "vehicletype": "car"
+  }
+}
+```
+### Responses
+
+### Success (200)
+
+| Field        | Type   | Description                                    |
+|--------------|--------|------------------------------------------------|
+| message      | string | A success message                             |
+| token        | string | The authentication token for the captain      |
+| newCaptain   | object | The details of the newly registered captain   |
+
+```json
+{
+  "message": "Captain Registration successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzdkOWFiZmNiYWE4ODg2MDAwYmMyMDkiLCJpYXQiOjE3MzYzNjg3MjIsImV4cCI6MTczNjQ1NTEyMn0.QdoeLdHA5Nqos0hliNma5XSF9ByLkU94CNyeAwDr0m8",
+  "newCaptain": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "password": "$2b$10$GOB9K7Hzlbbo/fQHsFfBFuTQ2w1NJ5Kr.f./k3NDlLDUvdqNRfp0W",
+    "vehicle": {
+      "color": "red",
+      "plate": "456 987",
+      "capacity": 3,
+      "vehicletype": "car",
+      "_id": "677c6488a73d604e3b357d5f",
+      "status": "inactive"
+    }
+  }
+}
+```
+### Validation Error (400)
+Occurs when one or more validation rules are violated.
+
+### Example Response
+```json
+{
+  "errors": [
+    {
+      "msg": "First name must be at least 3 characters long",
+      "param": "fullname.firstname",
+      "location": "body"
+    }
+  ]
+}
+```
+### Email Already Registered (401)
+Occurs when the provided email is already registered in the system.
+
+### Example Response
+```json
+{
+  "message": "Email is already registered. Please log in."
+}
+```
+
+### Internal Server Error (500)
+Occurs when the server encounters an unexpected error.
+
+### Example Response
+```json
+{
+  "error": "Internal server error"
+}
+```
+
+---
+---
+
+# Captain Login API
+
+This API endpoint allows an existing captain to log in to the system by providing their email and password.
+
+## Endpoint
+
+`POST /captains/login`
+
+## Summary
+
+Authenticates an existing captain and returns a token along with their profile details.
+
+## Request
+
+### Headers
+
+| Key             | Value             |
+|------------------|-------------------|
+| Content-Type     | application/json  |
+
+### Request Body
+
+The body of the request should contain the following fields:
+
+| Field    | Type   | Description                             | Example                |
+|----------|--------|-----------------------------------------|------------------------|
+| email    | string | The email address of the captain        | "captain1@example.com" |
+| password | string | The password for the captain            | "12345667"            |
+
+### Example Request
+
+```json
+{
+  "email": "captain1@example.com",
+  "password": "12345667"
+}
+```
+
+### Responses
+
+#### Success (200)
+| Field    | Type   | Description                                   |
+|----------|--------|-----------------------------------------------|
+| message  | string | A success message                            |
+| token    | string | The authentication token for the captain     |
+| captain  | object | The profile details of the authenticated captain |
+
+##### Example Response
+
+```json
+{
+  "message": "Captain Logged In successfully",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzdkOWFiZmNiYWE4ODg2MDAwYmMyMDkiLCJpYXQiOjE3MzYzNjg3MjIsImV4cCI6MTczNjQ1NTEyMn0.QdoeLdHA5Nqos0hliNma5XSF9ByLkU94CNyeAwDr0m8",
+  "captain": {
+    "fullname": {
+      "firstname": "Captain",
+      "lastname": "Smith"
+    },
+    "vehicle": {
+      "color": "red",
+      "plate": "456789",
+      "capacity": 3,
+      "vehicleType": "car"
+    },
+    "_id": "677d9abfcbaa8886000bc209",
+    "email": "captain1@example.com",
+    "password": "$2b$10$.3ht2qHDbFmjJxXg8rfgTuwyo.Omd1eEaVU495lHIvHn4FIPicbKG",
+    "status": "inactive",
+    "__v": 0
+  }
+}
+```
+
+### Invalid Email or Password (401)
+
+Occurs when the provided email or password is incorrect.
+```json
+Example Response
+{
+  "message": "Invalid email or password."
+}
+```
+
+### Internal Server Error (500)
+
+Occurs when the server encounters an unexpected error.
+```json
+Example Response
+{
+  "error": "Internal server error"
+}
+```
+
+---
+---
+
+# Captain Profile API
+
+This API endpoint retrieves the profile information of the authenticated captain. A valid JWT token must be provided in the `Authorization` header.
+
+## Endpoint
+
+`GET /captain/profile`
+
+---
+
+## Summary
+
+Fetches the profile details of the authenticated captain.
+
+---
+
+## Request
+
+### Headers
+
+| Key             | Value             |
+|------------------|-------------------|
+| Authorization    | Bearer <token>    |
+
+---
+
+## Responses
+
+### Success (200)
+
+| Field          | Type   | Description                                     |
+|-----------------|--------|-------------------------------------------------|
+| fullname        | object | The full name of the captain                   |
+| fullname.firstname | string | The first name of the captain                |
+| fullname.lastname  | string | The last name of the captain                 |
+| vehicle         | object | The details of the captain's vehicle           |
+| vehicle.color    | string | The color of the vehicle                      |
+| vehicle.plate    | string | The license plate of the vehicle              |
+| vehicle.capacity | number | The passenger capacity of the vehicle         |
+| vehicle.vehicleType | string | The type of the vehicle (e.g., car, auto)   |
+| email           | string | The email address of the captain               |
+| status          | string | The current status of the captain (e.g., active, inactive) |
+| _id             | string | The unique ID of the captain                   |
+| __v             | number | The version key for the captain's record       |
+
+#### Example Response
+
+```json
+{
+  "captainData": {
+    "fullname": {
+      "firstname": "Captain",
+      "lastname": "Smith"
+    },
+    "vehicle": {
+      "color": "red",
+      "plate": "456789",
+      "capacity": 3,
+      "vehicleType": "car"
+    },
+    "email": "captain1@example.com",
+    "status": "active",
+    "_id": "677d9abfcbaa8886000bc209",
+    "__v": 0
+  }
+}
+```
+
+### Unauthorized (401)
+Occurs when the token is missing, invalid, or expired.
+
+### Example Response
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+### Captain Not Found (404)
+Occurs when the requested captain does not exist in the database.
+
+### Example Response
+```json
+{
+  "message": "Captain not found"
+}
+```
+### Internal Server Error (500)
+Occurs when the server encounters an unexpected error.
+
+### Example Response
+```json
+{
+  "error": "Internal server error"
+}
+```
+
+---
+---
+
+# captain's Logout API
+
+This API endpoint Logouts the captain's.
+
+## Endpoint: `/captains/logout`
+
+### Method: `GET`
+
+### Summary:
+Logouts the captains.
+
+### Description:
+This endpoint allows captains to logout from the captain and it will make the token to blacklist.
+
+### Authentication:
+- Type: Bearer Token (`JWT`)
+
+### Responses:
+
+#### 200 - Success
+The captain Logged out succesfully.
+
+**Example Response:**
+```json
+{
+    "message" : "user captain out succesfully"
+}
+```
+
+### Validation Error (Status Code: 401)
+Occurs if invalid token , token not provided, if token expired
+
+#### Example Response:
+```json
+    {
+            "message": "Unauthorized",
+    }
+```
+
+### Internal Server Error (Status Code: 500)
+Occurs when the server encounters an unexpected error.
+
+#### Example Response:
+```json
+{
+    "error": "Internal server error"
+}
+```
 

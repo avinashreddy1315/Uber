@@ -450,7 +450,7 @@ The body of the request should contain the following fields:
 | token    | string | The authentication token for the captain     |
 | captain  | object | The profile details of the authenticated captain |
 
-##### Example Response
+### Example Response
 
 ```json
 {
@@ -479,8 +479,10 @@ The body of the request should contain the following fields:
 ### Invalid Email or Password (401)
 
 Occurs when the provided email or password is incorrect.
+
+### Example Response
 ```json
-Example Response
+
 {
   "message": "Invalid email or password."
 }
@@ -489,8 +491,9 @@ Example Response
 ### Internal Server Error (500)
 
 Occurs when the server encounters an unexpected error.
+### Example Response
 ```json
-Example Response
+
 {
   "error": "Internal server error"
 }

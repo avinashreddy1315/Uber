@@ -611,7 +611,7 @@ This API endpoint Logouts the captain's.
 ### Method: `GET`
 
 ### Summary:
-Logouts the captains.
+Logouts the captains and blacklist the token and remove it from databse after 24hrs.
 
 ### Description:
 This endpoint allows captains to logout from the captain and it will make the token to blacklist.

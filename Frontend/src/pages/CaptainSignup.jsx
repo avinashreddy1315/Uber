@@ -13,7 +13,7 @@ const CaptainSignup = () => {
     e.preventDefault();
   
     const newUserData = {
-      username: {
+      fullName: {
         firstName: firstName,
         lastName: lastName,
       },
@@ -41,7 +41,7 @@ const CaptainSignup = () => {
           />
           <form onSubmit={(e)=>{
             submitHandler(e)}}>
-            <h3 className="text-lg w-1/2 font-medium mb-2">What's your name</h3>
+            <h3 className="text-lg w-full font-medium mb-2">What's our Captain's name</h3>
             <div className="flex gap-6 mb-6">
               <input
                 required
@@ -65,7 +65,7 @@ const CaptainSignup = () => {
                 }}
               />
             </div>
-            <h3 className="text-lg font-medium mb-6">What's your email</h3>
+            <h3 className="text-lg font-medium mb-6">What's our Captain's email</h3>
             <input
               required
               className="bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base"

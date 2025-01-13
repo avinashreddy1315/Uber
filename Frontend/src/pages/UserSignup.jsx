@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Uberlogo from '../../public/Uber_logo.png'
 
 const UserSignup = () => {
   return (
     <div>
       <div className='p-7 h-screen flex flex-col justify-between'>
         <div>
-        <img className='w-16 mb-10'  src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="Uber Logo"/>
+        <Link to="/"><img className='w-16 mb-10'  src={Uberlogo} alt="Uber Logo"/></Link>
       
       <form onSubmit={(e)=>{
         submitHandler(e)

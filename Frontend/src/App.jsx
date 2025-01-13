@@ -7,7 +7,7 @@ import CaptainSignup from './pages/CaptainSignup'
 import Captainlogin from './pages/Captainlogin'
 const App = () => {
   return (
-    <div>
+    <div className='app overflow-x-hidden'>
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/login' element={<UserLogin/>}/>

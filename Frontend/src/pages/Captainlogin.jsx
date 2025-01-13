@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Driverlogo from '../../public/Driverlogo.png'
+import Uberlogo from '../../public/Uber_logo.png'
 
 const Captainlogin = () => {
     const[email,setEmail] = useState('')
@@ -21,7 +22,7 @@ const Captainlogin = () => {
     return (
         <div className='p-7 h-screen flex flex-col justify-between'>
             <div>
-            <img className='w-16 mb-10'  src={Driverlogo} alt="Uber Logo"/>
+            <Link to="/"><img className='w-16 mb-10'  src={Uberlogo} alt="Uber Logo"/></Link>
           
           <form onSubmit={(e)=>{
             submitHandler(e)

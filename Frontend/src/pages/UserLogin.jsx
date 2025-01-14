@@ -10,6 +10,7 @@ const UserLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate()
 
@@ -17,14 +18,31 @@ const UserLogin = () => {
   const {user, setUser} = React.useContext(UserDataContext)
 
   // Handle traditional email/password login
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+    setErrorMessage('')
+    //console.log(email, password);
 
-    setUserData({
+    const userLoginData = {
       email: email,
       password: password,
-    });
+    };
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userLoginData);
+
+      if (response.status === 200) {
+        //console.log(response.data.message);
+        const data = response.data;
+        localStorage.setItem('token', data.token)
+        setUser(data.user);
+
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMessage(error.response.data.message);
+    }
 
     setEmail('');
     setPassword('');
@@ -33,7 +51,7 @@ const UserLogin = () => {
   // Handle Google Login Success
   const handleUserLogin = async (credentialResponse) => {
     const tokenId = credentialResponse.credential;  // Get the Google token
-    console.log("Google Token ID:", tokenId);
+    //console.log("Google Token ID:", tokenId);
   
     try {
       const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/google-login-user`, {
@@ -50,6 +68,7 @@ const UserLogin = () => {
       // ✅ Handle Successful Login
       if (res.status === 200) {
         alert("Login Successful!");
+         localStorage.setItem('token', res.data.token)
         navigate('/home');
       } 
       // ✅ Handle Redirect to Signup
@@ -106,6 +125,7 @@ const UserLogin = () => {
           <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create New Account</Link></p>
         </form>
       </div>
+      {errorMessage ? <p className='pt-2 text-red-700'>{errorMessage}</p> : <p></p>}
 
       {/* Google Login Button */}
       <div className="flex justify-center my-4">

@@ -14,9 +14,11 @@ const UserSignup = () => {
   const [firstName, setFirstName] = useState(location.state?.firstname || '');
   const [lastName, setLastName] = useState(location.state?.lastname || '');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setErrorMessage('')
 
     const newUser = {
       fullname: {
@@ -31,14 +33,16 @@ const UserSignup = () => {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
 
       if (response.status === 200) {
-        console.log(response);
+        //console.log(response);
         const data = response.data;
+        localStorage.setItem('token', data.token)
         setUser(data.user);
 
         navigate('/home');
       }
     } catch (error) {
       console.error("Signup error:", error);
+      setErrorMessage(error.response.data.message);
     }
 
     // Clear the form fields
@@ -109,6 +113,8 @@ const UserSignup = () => {
             Already have an account? <Link to="/login" className="text-blue-600">Login here</Link>
           </p>
         </div>
+
+        {errorMessage ? <p className='pt-1 text-red-700'>{errorMessage}</p> : <p></p>}
 
         <div>
           <p className="text-[10px] leading-light">

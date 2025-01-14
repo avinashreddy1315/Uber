@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 
 const userRoutes = require('./routes/user.routes')
 const captainRouter = require('./routes/captain.routes')
-const gogleAuthRouter = require('./routes/user.auth.routes')
+const gogleAuthRouter = require('./routes/google.auth.routes')
 
 
 // Swagger dependencies

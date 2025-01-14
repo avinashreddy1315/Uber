@@ -34,6 +34,7 @@ const registerCaptain = async (req, res, next) =>{
         });
 
         const token = newCaptain.generateAuthToken();
+        res.cookie('token', token);
         return res.status(200).json({message : "Captain regisrted succesfully", token, newCaptain})
 
     }catch(error){

@@ -4,9 +4,7 @@ import { UserDataContext } from '../context/UserContext'
 const Home = () => {
 
   const {user} = React.useContext(UserDataContext);
-  useState(() =>{
-    console.log(user);
-  }, [])
+  
 
   return (
     <div>

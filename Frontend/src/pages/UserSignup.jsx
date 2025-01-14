@@ -1,28 +1,45 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Uberlogo from '../../public/Uber_logo.png';
+import axios from 'axios';
+import { UserDataContext } from '../context/UserContext';
 
 const UserSignup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [userData, setUserData] = useState({}); 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, setUser } = React.useContext(UserDataContext);
 
-  const submitHandler = (e) => {
+  // Pre-fill form data if passed from Google login
+  const [email, setEmail] = useState(location.state?.email || '');
+  const [firstName, setFirstName] = useState(location.state?.firstname || '');
+  const [lastName, setLastName] = useState(location.state?.lastname || '');
+  const [password, setPassword] = useState('');
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    const newUserData = {
-      fullName: {
-        firstName: firstName,
-        lastName: lastName,
+    const newUser = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName,
       },
       email: email,
       password: password,
     };
 
-    setUserData(newUserData);
-    console.log(newUserData);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+
+      if (response.status === 200) {
+        console.log(response);
+        const data = response.data;
+        setUser(data.user);
+
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
 
     // Clear the form fields
     setEmail('');
@@ -84,7 +101,7 @@ const UserSignup = () => {
               type="submit"
               className="bg-[#111] text-white font-semibold mb-7 rounded px-4 py-2 w-full text-lg"
             >
-              Sign Up
+              Create User Account
             </button>
           </form>
 

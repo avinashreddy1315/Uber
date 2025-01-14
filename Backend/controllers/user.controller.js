@@ -13,7 +13,7 @@ const registerUser = async (req, res, next) =>{
     }
 
     const {fullname, email, password} = req.body;
-
+    console.log(req.body);
     
     try{
         //console.log(req.body);
@@ -35,7 +35,7 @@ const registerUser = async (req, res, next) =>{
         let token =newUser.generateAuthToken();
         
 
-        res.status(200).json({message: "User Registrion succesfully", token, newUser})
+        res.status(200).json({message: "User Registrion succesfully", token, user:newUser})
 
 
     }catch(error){

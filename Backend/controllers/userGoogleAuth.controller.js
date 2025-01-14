@@ -6,6 +6,7 @@ const {verifyGoogleToken} = require('../services/googleAuth.service');
 const googleUserLogin = async (req, res) =>{
 
     const {tokenId} = req.body;
+    //console.log(`tokenId from google : ${tokenId}`)
     try{
         const payload = await verifyGoogleToken(tokenId);
 
@@ -26,7 +27,7 @@ const googleUserLogin = async (req, res) =>{
             //If user doen't exsits
             return res.status(302).json({
                 message : "user not found, redirecting to registation",
-                redirectUrl: '/user/register',
+                redirectUrl: '/signup',
                 userDetails: {
                     email: email,
                     firstname: given_name,

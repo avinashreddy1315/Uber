@@ -10,7 +10,7 @@ const Start = () => {
         style={{
           backgroundImage: `url(${traffiu})`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '110% 90%'
+          backgroundSize: '115% 90%'
         }}
       >
       <img className='w-14 ml-8'  src={Uberlogo} alt="Uber Logo"/>

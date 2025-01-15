@@ -6,9 +6,11 @@ const Start = () => {
   return (
     <div >
       <div
-        className='h-screen pt-8 flex justify-between flex-col w-full bg-cover bg-bottom'
+        className='h-screen pt-8 flex justify-between flex-col w-full '
         style={{
           backgroundImage: `url(${traffiu})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '110% 90%'
         }}
       >
       <img className='w-14 ml-8'  src={Uberlogo} alt="Uber Logo"/>

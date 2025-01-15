@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
+import Uberlogo from '../../public/Uber_logo.png'
 
 const Home = () => {
 
@@ -8,8 +9,14 @@ const Home = () => {
 
   return (
     <div>
-      <h2>Welcome to home</h2>
-      <h1>{user.email}</h1>
+      <div >
+        <img className='w-16 absolute left-6 top-6 '  src={Uberlogo} alt="Uber Logo"/>
+      </div>
+      <div>
+        
+      </div>
+      
+      
     </div>
   )
 }

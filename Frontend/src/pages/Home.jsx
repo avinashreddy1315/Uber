@@ -13,6 +13,9 @@ const Home = () => {
         <img className='w-16 absolute left-6 top-6 '  src={Uberlogo} alt="Uber Logo"/>
       </div>
       <div>
+        <p>welcome to home</p>
+      </div>
+      <div>
         
       </div>
       

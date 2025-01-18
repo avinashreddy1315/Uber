@@ -13,7 +13,7 @@ const registerUser = async (req, res, next) =>{
     }
 
     const {fullname, email, password} = req.body;
-    console.log(req.body);
+    //console.log(req.body);
     
     try{
         //console.log(req.body);

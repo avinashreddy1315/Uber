@@ -10,15 +10,20 @@ import Ubercar from '../../public/ubercar.webp'
 import ubercar2 from '../../public/ubercar2.webp'
 import ubermotorbike from '../../public/ubermotorbike.webp'
 import uberauto from '../../public/uberauto.webp'
+import VehiclePanel from '../components/VehiclePanel';
+import ConfirmRide from '../components/ConfirmRide';
 
 
 const Home = () => {
   const [pickup , setPickup] = useState('')
   const [destination , setDestination]=useState('')
   const[panelOpen, setPanelOpen] =useState(false)
+  const vehiclePanelRef = useRef(null)
+  const confirmRidePanelRef = useRef(null)
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
-
+  const [vehiclePanel, setVehiclePanel]=useState(false)
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false)
 
 
   const submitHandler=(e)=>{
@@ -48,6 +53,36 @@ const Home = () => {
   },[panelOpen])
 
   const {user} = React.useContext(UserDataContext);
+  useGSAP(function(){
+    if(vehiclePanel)
+    {
+      gsap.to(vehiclePanelRef.current,{
+        transform:'translateY(0)'
+      })
+    }
+    else
+    {
+      gsap.to(vehiclePanelRef.current,{
+        transform:'translateY(100%)'
+      })
+    }
+  },[vehiclePanel])
+
+
+  useGSAP(function(){
+    if(confirmRidePanel)
+    {
+      gsap.to(confirmRidePanelRef.current,{
+        transform:'translateY(0)'
+      })
+    }
+    else
+    {
+      gsap.to(confirmRidePanelRef.current,{
+        transform:'translateY(100%)'
+      })
+    }
+  },[confirmRidePanel])
   
 
   return (
@@ -96,42 +131,18 @@ const Home = () => {
         </form>
         </div>
         <div ref={panelRef} className='bg-white h-0'>
-          <LocationSearchPanel/>
+          <LocationSearchPanel   setPanelOpen = {setPanelOpen} setVehiclePanel={setVehiclePanel}/>
 
         </div>
       </div>
-      <div className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8'> 
-        <h3 className='text-2xl font-semibold mb-5'> Choose a Vehicle</h3>
+      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'> 
+        <VehiclePanel 
+        setConfirmRidePanel={setConfirmRidePanel} 
+        setVehiclePanel={setVehiclePanel}/>
+      </div>
 
-        <div className='flex border-2 active:border-black mb-2 rounded-xl w-full items-center justify-between p-3'>
-          <img  className='h-10' src={ubercar2} alt=""/>
-          <div className=' ml-2 w-1/2'>
-            <h4 className=' font-medium text-base'> UberGo <span> <i className="ri-user-3-fill"></i>4</span></h4>
-            <h5 className=' font-medium text-base'> 2 mins away</h5>
-            <p className=' font-normal text-xs text-gray-600' > Affordable, compact rides</p>
-          </div>
-          <h2 className='text-lg font-semibold'> $23.20</h2>
-        </div>
-
-        <div className='flex border-2 active:border-black mb-2 rounded-xl w-full items-center justify-between p-3'>
-          <img  className='h-12' src={ubermotorbike} alt=""/>
-          <div className=' ml-2 w-1/2'>
-            <h4 className=' font-medium text-base'> Moto <span> <i className="ri-user-3-fill"></i>1</span></h4>
-            <h5 className=' font-medium text-base'> 3 mins away</h5>
-            <p className=' font-normal text-xs text-gray-600' > Affordable, motorbike rides</p>
-          </div>
-          <h2 className='text-lg font-semibold'> $33.20</h2>
-        </div>
-
-        <div className='flex border-2 active:border-black mb-2 rounded-xl w-full items-center justify-between p-3'>
-          <img  className='h-12' src={uberauto} alt=""/>
-          <div className=' ml-2 w-1/2'>
-            <h4 className=' font-medium text-base'> Uber Auto <span> <i className="ri-user-3-fill"></i>3</span></h4>
-            <h5 className=' font-medium text-base'> 3 mins away</h5>
-            <p className=' font-normal text-xs text-gray-600' > Affordable, Auto rides</p>
-          </div>
-          <h2 className='text-lg font-semibold'> $19.20</h2>
-        </div>
+      <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'> 
+        <ConfirmRide/>
       </div>
       
     </div>

@@ -1,11 +1,11 @@
 import React from 'react'
 import ubercar2 from '../../public/ubercar2.webp'
 
-const LookingForDriver = () => {
+const LookingForDriver = (props) => {
   return (
     <div>
           <h5 className='p-3 text-center w-[90%] absolute top-0' onClick={()=>{
-                    props.setVehiclePanel(false)
+                    props.setVehicleFound(false)
                   }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
                   <h3 className='text-2xl font-semibold mb-5'> Looking for a Driver </h3>
                   <div className='flex gap-2 justify-between flex-col items-center'>

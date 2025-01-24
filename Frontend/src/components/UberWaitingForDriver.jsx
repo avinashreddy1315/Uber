@@ -2,11 +2,11 @@ import React from 'react'
 import ubercar2 from '../../public/ubercar2.webp'
 
 
-/*const WaitingForDriver = (props) => {
+const UberWaitingForDriver = (props) => {
   return (
       <div>
              <h5 className='p-3 text-center w-[90%] absolute top-0' onClick={()=>{
-                        props.setWaitingForDriver(false)
+                        props.setUberWaitingForDriver(false)
                       }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
                       <div className='flex items-center justify-between'>
                         <img className='h-10'  src={ubercar2} alt=''/>
@@ -51,20 +51,10 @@ import ubercar2 from '../../public/ubercar2.webp'
   )
 }
 
-export default WaitingForDriver */
+export default UberWaitingForDriver
 
 
 
 
 
-const WaitingForDriver = (props) => {
-  return (
-    <div>
-      <h1>Witig for driver</h1>
-      
-    </div>
-  )
-}
-
-export default WaitingForDriver
 

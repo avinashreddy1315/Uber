@@ -1,7 +1,6 @@
 import React from 'react'
 
 const LocationSearchPanel = (props) => {
-    console.log(props);
 
 
     const locations=[
@@ -22,7 +21,6 @@ const LocationSearchPanel = (props) => {
         {
             locations.map(function(elem,idx){
                 return  <div key={idx} onClick={()=>{
-                    console.log("Location clicked");
                     props.setVehiclePanel(true)
                     props.setPanelOpen(true);
                 }}   className='flex gap-4 border-2 p-3 border-gray-2 active:border-black rounded-xl items-center my-2 justify-start'>

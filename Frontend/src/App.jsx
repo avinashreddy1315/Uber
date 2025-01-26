@@ -13,6 +13,7 @@ import UserProtectedWrapper from './components/UserProtectedWrapper';
 import UserLogout from './pages/UserLogout';
 import CaptainProtectedWrapper from './components/CaptainProtectedWrapper';
 import CaptainLogout from './pages/CaptainLogout';
+import Riding from './components/Riding';
 
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
@@ -42,6 +43,7 @@ const App = () => {
           {/* Public Routes */}
           <Route path='/' element={<AnimatedRoute element={<Start />} />} />
           <Route path='/login' element={<AnimatedRoute element={<UserLogin />} />} />
+          <Route path='/riding' element={<AnimatedRoute element={<Riding />} />} />
           <Route path='/signup' element={<AnimatedRoute element={<UserSignup />} />} />
           <Route path='/captain-login' element={<AnimatedRoute element={<Captainlogin />} />} />
           <Route path='/captain-signup' element={<AnimatedRoute element={<CaptainSignup />} />} />

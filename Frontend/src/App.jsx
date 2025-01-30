@@ -14,6 +14,8 @@ import UserLogout from './pages/UserLogout';
 import CaptainProtectedWrapper from './components/CaptainProtectedWrapper';
 import CaptainLogout from './pages/CaptainLogout';
 import Riding from './components/Riding';
+import CaptainRiding from './pages/CaptainRiding';
+import 'remixicon/fonts/remixicon.css'
 
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
@@ -44,6 +46,7 @@ const App = () => {
           <Route path='/' element={<AnimatedRoute element={<Start />} />} />
           <Route path='/login' element={<AnimatedRoute element={<UserLogin />} />} />
           <Route path='/riding' element={<AnimatedRoute element={<Riding />} />} />
+          <Route path='/captain-riding' element={<AnimatedRoute element={<CaptainRiding />} />} />
           <Route path='/signup' element={<AnimatedRoute element={<UserSignup />} />} />
           <Route path='/captain-login' element={<AnimatedRoute element={<Captainlogin />} />} />
           <Route path='/captain-signup' element={<AnimatedRoute element={<CaptainSignup />} />} />

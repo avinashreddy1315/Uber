@@ -1,6 +1,8 @@
 import React from 'react'
 import ubercar2 from '../../public/ubercar2.webp'
 import Random_2 from '../../public/Random_2.jpg'
+import { Link } from 'react-router-dom'
+
 
 const ConfirmRidePopUP = (props) => {
   return (
@@ -42,13 +44,12 @@ const ConfirmRidePopUP = (props) => {
                           </div>
           
                         </div>
-                        <button  onClick={()=>{
-                        }} className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'> Confirm Ride</button>
+                        <Link to='/captain-riding' className='w-full mt-5 flex justify-center bg-green-600 text-white font-semibold p-3 rounded-lg'> Confirm Ride</Link>
                         
                         <button  onClick={()=>{
                             props.setConfirmRidePopupPanel(false)
                             props.setRidePopupPanel(false)
-                        }} className='w-full mt-1 bg-red-600 text-white font-semibold p-2 rounded-lg'> Cancel Ride</button>
+                        }} className='w-full mt-1 bg-red-600 text-white font-semibold p-3 rounded-lg'> Cancel Ride</button>
                         
                         </div>
         </div>

@@ -34,7 +34,7 @@ const registerUser = async (req, res, next) =>{
        
         let token =newUser.generateAuthToken();
         
-
+        res.cookie('token', token);
         res.status(200).json({message: "User Registrion succesfully", token, user:newUser})
 
 

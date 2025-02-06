@@ -10,6 +10,7 @@ const userRoutes = require('./routes/user.routes')
 const captainRouter = require('./routes/captain.routes')
 const gogleAuthRouter = require('./routes/google.auth.routes')
 const mapRouter = require('./routes/maps.routes');
+const rideRouter = require('./routes/ride.routes')
 
 
 // Swagger dependencies
@@ -56,6 +57,7 @@ app.use('/users', userRoutes);
 app.use('/captains', captainRouter)
 app.use('/api/auth', gogleAuthRouter);
 app.use('/map', mapRouter);
+app.use('/rides', rideRouter);
 
 
 

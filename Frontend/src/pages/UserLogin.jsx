@@ -4,6 +4,7 @@ import Uberlogo from '../../public/Uber_logo.png';
 import { GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { UserDataContext } from '../context/UserContext';
+import { Vortex } from 'react-loader-spinner';
 
 
 const UserLogin = () => {
@@ -11,14 +12,16 @@ const UserLogin = () => {
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate()
 
 
-  const {user, setUser} = React.useContext(UserDataContext)
+  const { user, setUser } = React.useContext(UserDataContext)
 
   // Handle traditional email/password login
   const submitHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
     setErrorMessage('')
     //console.log(email, password);
@@ -36,14 +39,15 @@ const UserLogin = () => {
         const data = response.data;
         localStorage.setItem('token', data.token)
         setUser(data.user);
-
+        setLoading(false);
         navigate('/home');
       }
     } catch (error) {
+      setLoading(false);
       console.error("Login error:", error);
       setErrorMessage(error.response.data.message);
     }
-
+    setLoading(false);
     setEmail('');
     setPassword('');
   };
@@ -52,7 +56,7 @@ const UserLogin = () => {
   const handleUserLogin = async (credentialResponse) => {
     const tokenId = credentialResponse.credential;  // Get the Google token
     //console.log("Google Token ID:", tokenId);
-  
+    setLoading(true);
     try {
       const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/google-login-user`, {
         tokenId: tokenId,
@@ -61,29 +65,33 @@ const UserLogin = () => {
           return status < 500;  // Accept all responses below 500 (handle 302 manually)
         }
       });
-  
+
       //console.log(res.data);
       setUser(res.data.user)
-  
+
       // ✅ Handle Successful Login
       if (res.status === 200) {
         alert("Login Successful!");
-         localStorage.setItem('token', res.data.token)
+        setLoading(false);
+        localStorage.setItem('token', res.data.token)
         navigate('/home');
-      } 
+      }
       // ✅ Handle Redirect to Signup
       else if (res.status === 302) {
         const { redirectUrl, userDetails, message } = res.data;
         alert(message);
+        setLoading(false);
         navigate(redirectUrl, { state: userDetails });  // Redirect to /user/register with user data
-      } 
+      }
       else {
         console.error("Unexpected response:", res);
+        setLoading(false);
         alert("Something went wrong. Please try again.");
       }
-  
+
     } catch (error) {
       console.error("Google login error:", error);
+      setLoading(false);
     }
   };
   // Handle Google Login Failure
@@ -97,48 +105,69 @@ const UserLogin = () => {
         <Link to="/">
           <img className='w-16 mb-10' src={Uberlogo} alt="Uber Logo" />
         </Link>
+        {loading ?
+          <div className='flex justify-center items-center mt-24'>
+            <Vortex
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="vortex-loading"
+              wrapperStyle={{}}
+              wrapperClass="vortex-wrapper"
+              colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
+            />
+          </div> :
+          <div className='flex justify-between flex-col gap-4'>
+            {/* Traditional Login Form */}
+            <form onSubmit={submitHandler}>
+              <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+              <input
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
+                type="email"
+                placeholder='email@example.com'
+              />
 
-        {/* Traditional Login Form */}
-        <form onSubmit={submitHandler}>
-          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
-          <input
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className='bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
-            type="email"
-            placeholder='email@example.com'
-          />
+              <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
+              <input
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className='bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
+                type="password"
+                placeholder='password'
+              />
 
-          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
-          <input
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className='bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
-            type="password"
-            placeholder='password'
-          />
+              <button className='bg-[#111] text-white font-semibold mb-7 rounded px-4 py-2 w-full text-lg'>Login</button>
 
-          <button className='bg-[#111] text-white font-semibold mb-7 rounded px-4 py-2 w-full text-lg'>Login</button>
 
-          <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create New Account</Link></p>
-        </form>
-      </div>
-      {errorMessage ? <p className='pt-2 text-red-700'>{errorMessage}</p> : <p></p>}
+            </form>
 
-      {/* Google Login Button */}
-      <div className="flex justify-center my-4">
-        <GoogleLogin
-          onSuccess={handleUserLogin}
-          onError={handleLoginFailure}
-        />
-      </div>
+            <div>
+              <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create New Account</Link></p>
+            </div>
 
-      <div>
-        <Link to='/captain-login' className='bg-[#10b490] flex items-center justify-center text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg'>
-          Sign in as Captain
-        </Link>
+
+            <div>
+              {errorMessage ? <p className='pt-2 text-red-700'>{errorMessage}</p> : <p></p>}
+            </div>
+            {/* Google Login Button */}
+            <div className="flex justify-center my-4 mb-7">
+              <GoogleLogin
+                onSuccess={handleUserLogin}
+                onError={handleLoginFailure}
+              />
+            </div>
+
+            <div>
+              <Link to='/captain-login' className='bg-[#10b490] flex items-center justify-center text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg'>
+                Sign in as Captain
+              </Link>
+            </div>
+          </div>
+        }
       </div>
     </div>
   );

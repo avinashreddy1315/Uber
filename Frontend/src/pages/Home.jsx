@@ -337,7 +337,7 @@ const claerPD = () =>{
           setConfirmRidePanel={setConfirmRidePanel}
           setVehiclePanel={setVehiclePanel}
           fare={fare}
-           />
+        />
           
       </div>
 

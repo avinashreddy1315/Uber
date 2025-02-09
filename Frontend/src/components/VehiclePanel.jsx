@@ -5,7 +5,7 @@ import ubermotorbike from '../../public/ubermotorbike.webp';
 import uberauto from '../../public/uberauto.webp';
 
 const VehiclePanel = (props) => {
-  
+
   // State to track selected vehicle (default: UberGo)
   const [selectedVehicle, setSelectedVehicle] = useState('car');
 
@@ -51,7 +51,7 @@ const VehiclePanel = (props) => {
         const formattedArrivalTime = arrivalTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
 
         return (
-          <div 
+          <div
             key={vehicle.type}
             onClick={() => setSelectedVehicle(vehicle.type)}
             className={`border-2 ${isSelected ? 'border-black bg-gray-100' : 'border-gray-300'} mb-2 rounded-xl w-full p-3 cursor-pointer transition-all`}
@@ -72,21 +72,22 @@ const VehiclePanel = (props) => {
 
             {/* Show expanded view for selected vehicle */}
             {isSelected && (
-              <div className="mt-4 p-4 bg-gray-200 rounded-lg">
+              <div className="mt-0 p-4 bg-gray-200 rounded-lg">
                 <div className='flex justify-center'>
-                  <img className='h-24' src={vehicle.img} alt={vehicle.name}/>
+                  <img className='h-24' src={vehicle.img} alt={vehicle.name} />
                 </div>
                 <div className='flex flex-row justify-between items-center'>
                   <div>
-                    <h4 className="text-sm font-semibold mt-1 mb-1">{vehicle.name} 
-                      <span><i className="ri-user-3-fill"></i>{vehicle.capacity}</span>
-                    </h4>
-                    <h4 className="text-sm font-semibold">
+                    <div className='flex flex-row  items-center gap-2'>
+                      <h4 className="text-lg font-semibold mt-1 mb-1">{vehicle.name} </h4>
+                      <h2><i className="ri-user-3-fill"></i>{vehicle.capacity}</h2>
+                    </div>
+                    <h4 className="text-lg font-semibold">
                       {formattedArrivalTime} <span>{vehicle.time}</span>
                     </h4>
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold">{`$${vehicle.price}`}</h2>
+                    <h2 className="text-xl font-semibold">{`$${vehicle.price}`}</h2>
                   </div>
                 </div>
               </div>

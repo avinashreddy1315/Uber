@@ -117,7 +117,7 @@ const UserLogin = () => {
               colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
             />
           </div> :
-          <div className='flex justify-between flex-col gap-4'>
+          <div className='flex justify-evenly flex-col gap-4 md:gap-6 min-h-[80vh]'>
             {/* Traditional Login Form */}
             <form onSubmit={submitHandler}>
               <h3 className='text-lg font-medium mb-2'>What's your email</h3>
@@ -145,22 +145,32 @@ const UserLogin = () => {
 
             </form>
 
+            {/*signup link */}
             <div>
               <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create New Account</Link></p>
             </div>
 
-
+            {/* error message */}
             <div>
               {errorMessage ? <p className='pt-2 text-red-700'>{errorMessage}</p> : <p></p>}
             </div>
-            {/* Google Login Button */}
-            <div className="flex justify-center my-4 mb-7">
-              <GoogleLogin
-                onSuccess={handleUserLogin}
-                onError={handleLoginFailure}
-              />
-            </div>
 
+            {/* Google Login Button */}
+            <div>
+              <div className='flex justify-center items-center mb-7 gap-3'>
+                <div className='w-16 h-0.5 bg-black rounded-full'></div>
+                <p className='font-semibold'>Other Sign-in Method</p>
+                <div className='w-16 h-0.5 bg-black rounded-full'></div>
+              </div>
+
+              <div className="flex justify-center my-4 mb-7">
+                <GoogleLogin
+                  onSuccess={handleUserLogin}
+                  onError={handleLoginFailure}
+                />
+              </div>
+            </div>
+            {/* signin as captain */}
             <div>
               <Link to='/captain-login' className='bg-[#10b490] flex items-center justify-center text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg'>
                 Sign in as Captain

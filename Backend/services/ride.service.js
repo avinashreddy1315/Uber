@@ -11,38 +11,50 @@ async function getFare(pickup, destination) {
     }
 
     const distanceTime = await mapsService.getDistanceAndTime(pickup, destination);
-    //console.log(distanceTime)
     
-    
+    // Ensure distance and duration exist
+    if (!distanceTime.elements.distance || !distanceTime.elements.duration) {
+        throw new Error("Unable to fetch distance and duration");
+    }
 
+    // Convert meters to kilometers and seconds to minutes
+    const distanceKm = distanceTime.elements.distance.value / 1000;
+    const durationMin = distanceTime.elements.duration.value / 60;
+
+    // Base Fare (Starting price)
     const baseFare = {
-        auto: 30,
-        car: 50,
-        moto: 20
+        auto: 2.00,  // Base price in USD
+        car: 3.50,
+        moto: 1.50
     };
 
+    // Per Kilometer Rate
     const perKmRate = {
-        auto: 10,
-        car: 15,
-        moto: 8
+        auto: 0.50,  // USD per km
+        car: 1.20,
+        moto: 0.40
     };
 
+    // Per Minute Rate (Time-based charge)
     const perMinuteRate = {
-        auto: 2,
-        car: 3,
-        moto: 1.5
+        auto: 0.10,  // USD per min
+        car: 0.30,
+        moto: 0.08
     };
 
-    // Convert meters to kilometers and duration to minutes
-    //console.log(distanceTime.elements.distance.value)
+    // Service Fee (Fixed fee added to every ride)
+    const serviceFee = 1.50;
+
+    // **Calculate Final Fare**
     const fare = {
-        auto: Math.round(baseFare.auto + ((distanceTime.elements.distance.value / 1000) * perKmRate.auto) + ((distanceTime.elements.duration.value / 60) * perMinuteRate.auto)),
-        car: Math.round(baseFare.car + ((distanceTime.elements.distance.value / 1000) * perKmRate.car) + ((distanceTime.elements.duration.value / 60) * perMinuteRate.car)),
-        moto: Math.round(baseFare.moto + ((distanceTime.elements.distance.value / 1000) * perKmRate.moto) + ((distanceTime.elements.duration.value / 60) * perMinuteRate.moto))
+        auto: parseFloat((baseFare.auto + (distanceKm * perKmRate.auto) + (durationMin * perMinuteRate.auto) + serviceFee).toFixed(2)),
+        car: parseFloat((baseFare.car + (distanceKm * perKmRate.car) + (durationMin * perMinuteRate.car) + serviceFee).toFixed(2)),
+        moto: parseFloat((baseFare.moto + (distanceKm * perKmRate.moto) + (durationMin * perMinuteRate.moto) + serviceFee).toFixed(2))
     };
-    //console.log(generateOtp())
+
     return fare;
 }
+
 
 
 const generateOtp = (length = 6) => {
@@ -85,4 +97,4 @@ const createRide = async({user, pickup, destination, vehicleType}) =>{
 
 
 
-module.exports = {createRide}
+module.exports = {createRide, getFare}

@@ -652,6 +652,289 @@ Occurs when the server encounters an unexpected error.
 ```
 
 
+# Maps API
+
+## Endpoint: `/map/get-coordinates`
+
+### Description
+This endpoint retrieves the coordinates (latitude & longitude) of a given address using the Google Maps API.
+
+---
+
+### Method
+`GET`
+
+---
+
+### Query Parameters
+- `address` (string, required): The address to get coordinates for.
+
+### Headers
+- `Authorization` (string, required): Bearer token for authentication.
+
+---
+
+### Responses
+
+#### Success (Status Code: 200)
+Returns the latitude and longitude of the provided address.
+
+#### Example Response:
+```json
+{
+    "latitude": 40.712776,
+    "longitude": -74.005974
+}
+```
+
+#### Validation Error (Status Code: 400)
+Occurs when the provided address is invalid.
+
+#### Example Response:
+```json
+{
+    "error": "Invalid address provided"
+}
+```
+
+#### Not Found (Status Code: 404)
+Occurs when the address could not be geocoded.
+
+#### Example Response:
+```json
+{
+    "error": "Coordinates not found"
+}
+```
+
+---
+
+## Endpoint: `/map/get-distance`
+
+### Description
+Retrieves the distance and estimated travel time between an origin and a destination.
+
+---
+
+### Method
+`GET`
+
+---
+
+### Query Parameters
+- `origin` (string, required): The starting address.
+- `destination` (string, required): The destination address.
+
+### Headers
+- `Authorization` (string, required): Bearer token for authentication.
+
+---
+
+### Responses
+
+#### Success (Status Code: 200)
+Returns the travel distance and estimated time.
+
+#### Example Response:
+```json
+{
+    "distance": "12.5 km",
+    "duration": "18 minutes"
+}
+```
+
+#### Validation Error (Status Code: 400)
+Occurs if either `origin` or `destination` is invalid.
+
+#### Example Response:
+```json
+{
+    "error": "Invalid origin or destination"
+}
+```
+
+#### Not Found (Status Code: 404)
+Occurs if distance and time could not be determined.
+
+#### Example Response:
+```json
+{
+    "error": "Distance and time data not available"
+}
+```
+
+---
+
+## Endpoint: `/map/get-suggestion`
+
+### Description
+Provides address suggestions based on user input using Google Maps Autocomplete.
+
+---
+
+### Method
+`GET`
+
+---
+
+### Query Parameters
+- `input` (string, required): The partial address or search term.
+
+### Headers
+- `Authorization` (string, required): Bearer token for authentication.
+
+---
+
+### Responses
+
+#### Success (Status Code: 200)
+Returns a list of address suggestions.
+
+#### Example Response:
+```json
+[
+    "1600 Amphitheatre Parkway, Mountain View, CA",
+    "1616 Amphitheatre Parkway, Mountain View, CA"
+]
+```
+
+#### Validation Error (Status Code: 400)
+Occurs if input is missing or invalid.
+
+#### Example Response:
+```json
+{
+    "error": "Invalid input provided"
+}
+```
+
+#### Server Error (Status Code: 500)
+Occurs if an error happens while fetching suggestions.
+
+#### Example Response:
+```json
+{
+    "error": "Internal server error"
+}
+```
+
+---
+
+# Ride API
+
+## Endpoint: `/rides/create`
+
+### Description
+Creates a new ride request between a pickup and destination location.
+
+---
+
+### Method
+`POST`
+
+---
+
+### Request Body
+The request body should be a JSON object with the following fields:
+- `pickup` (string, required): The pickup address.
+- `destination` (string, required): The destination address.
+- `vehicleType` (string, required): The type of vehicle (`auto`, `car`, `moto`).
+
+#### Example Request Body:
+```json
+{
+    "pickup": "123 Main St, New York, NY",
+    "destination": "456 Broadway, New York, NY",
+    "vehicleType": "car"
+}
+```
+
+---
+
+### Responses
+
+#### Success (Status Code: 200)
+Returns details of the created ride.
+
+#### Example Response:
+```json
+{
+    "rideId": "abc123",
+    "status": "pending",
+    "estimatedFare": "$15.00"
+}
+```
+
+#### Validation Error (Status Code: 400)
+Occurs if any required fields are missing or invalid.
+
+#### Example Response:
+```json
+{
+    "error": "Pickup location is required"
+}
+```
+
+---
+
+## Endpoint: `/rides/get-fare`
+
+### Description
+Fetches the estimated fare for a ride based on distance and travel time.
+
+---
+
+### Method
+`GET`
+
+---
+
+### Query Parameters
+- `pickup` (string, required): The pickup address.
+- `destination` (string, required): The destination address.
+
+### Headers
+- `Authorization` (string, required): Bearer token for authentication.
+
+---
+
+### Responses
+
+#### Success (Status Code: 200)
+Returns the estimated fare based on the route.
+
+#### Example Response:
+```json
+{
+    "auto": "$8.50",
+    "car": "$15.00",
+    "moto": "$6.00"
+}
+```
+
+#### Validation Error (Status Code: 400)
+Occurs if `pickup` or `destination` is invalid.
+
+#### Example Response:
+```json
+{
+    "error": "Invalid pickup or destination"
+}
+```
+
+---
+
+# Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+---
+
+# License
+
+This project is licensed under the MIT License.
+
+
 
 
 

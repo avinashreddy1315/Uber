@@ -82,4 +82,6 @@ const getSuggestions = async (address) =>{
 
 
 
+
+
 module.exports ={getAddressCoordinate, getDistanceAndTime, getSuggestions}

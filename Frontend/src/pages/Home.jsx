@@ -58,7 +58,7 @@ const Home = () => {
         }
       });
 
-      console.log("API Response:", response);
+      
 
       if (response.data && Array.isArray(response.data)) {
         setPickupSuggestions(response.data);
@@ -88,7 +88,7 @@ const Home = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      console.log("API Response:", response);
+      
       if (response.data && Array.isArray(response.data)) {
         setDestinationSuggestions(response.data);
       } else {
@@ -189,18 +189,31 @@ const Home = () => {
 
 
   async function findTrip() {
-    setVehiclePanel(true)
-    setPanelOpen(false)
+    
+    //console.log(pickup, destination);
+    if(!pickup || !destination){
+      setPDErrorMessage('Please enter your pickup and destination to book ride');
+      return;
+    }
+   
+    try{
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
+        params: { pickup, destination },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      //console.log(response);
+      setFare(response.data)
+      setVehiclePanel(true)
+      setPanelOpen(false) 
+    }catch(error){
+      console.error(error);
+    }
+    
 
-    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
-      params: { pickup, destination },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
 
-
-    setFare(response.data)
+    //
 
 
   }
@@ -231,6 +244,12 @@ const Home = () => {
     
   };
 
+
+const claerPD = () =>{
+  setPickup('');
+  setDestination('');
+}
+
   return (
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-5 top-5 ' src={Uberlogo} alt="Uber Logo" />
@@ -239,11 +258,12 @@ const Home = () => {
         <img className='h-full w-full object-cover' src={Map} alt=""></img>
       </div>
       <div className='flex flex-col justify-end h-screen absolute top-0 w-full'>
-        <div className='h-[30%] p-6 bg-white relative'>
+      <div className="p-6 bg-white relative min-h-[30%] max-h-[40vh]">
           <h5 ref={panelCloseRef} onClick={() => {
             setPanelOpen(false)
+            setPDErrorMessage('');
           }} className='absolute right-6 top-6 text-2xl' >
-            <i className='ri-arrow-down-wide-line'></i>
+            <i className='ri-arrow-down-wide-line' onClick={claerPD}></i>
 
           </h5>
           <h4 className='text-2xl font-semibold'> Find a trip</h4>
@@ -260,7 +280,7 @@ const Home = () => {
                 }}
                 value={pickup}
                 onChange={handlePickupChange}
-                className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-5"
+                className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-5 mb-2"
                 type="text"
                 placeholder="Add a pick-up location"
               />
@@ -269,9 +289,9 @@ const Home = () => {
               <button
                 type="button"
                 onClick={swapLocations}
-                className="absolute left-4/4 transform -translate-x-1/2 top-[50px] bg-slate-50 shadow-md p-2 rounded-full"
+                className="absolute right-0  top-[52px] pt-[10px] rounded-full"
               >
-                <ArrowUpDown size={20} />
+                <ArrowUpDown size={30} />
               </button>
 
               {/* Destination Input */}
@@ -282,16 +302,23 @@ const Home = () => {
                 }}
                 value={destination}
                 onChange={handleDestinationChange}
-                className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-3"
+                className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-5"
                 type="text"
                 placeholder="Enter your Destination"
               />
             </div>
-            <div className='mt-3 ml-3'>
-              <p className='text-red-800'>{pdErrorMessage !== null ? pdErrorMessage  : ''}</p>
-            </div>
+            
             
           </form>
+          <button className='w-full bg-black text-white font-bold text-lg p-3 rounded-md mt-6 '
+          onClick={() =>{
+            findTrip();
+          }}>
+            Find Trip
+          </button>
+          <div className='mt-3 ml-3'>
+              <p className='text-red-800'>{pdErrorMessage !== null ? pdErrorMessage  : ''}</p>
+          </div>
         </div>
         <div ref={panelRef} className='bg-white h-0'>
           <LocationSearchPanel
@@ -308,7 +335,10 @@ const Home = () => {
       <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
         <VehiclePanel
           setConfirmRidePanel={setConfirmRidePanel}
-          setVehiclePanel={setVehiclePanel} />
+          setVehiclePanel={setVehiclePanel}
+          fare={fare}
+           />
+          
       </div>
 
       <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>

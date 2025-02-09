@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {body} = require('express-validator')
+const {body, query} = require('express-validator')
 const verifyToken = require('../middleware/auth.middleware')
 
 const rideController = require('../controllers/ride.controller')
@@ -15,6 +15,16 @@ router.post('/create',
     verifyToken,
     rideController.createRide
 
+)
+
+
+router.get('/get-fare',
+    [
+        query('pickup').isString().isLength({min : 3}),
+        query('destination').isString().isLength({min : 3}),
+    ],
+    verifyToken,
+    rideController.getFare
 )
 
 

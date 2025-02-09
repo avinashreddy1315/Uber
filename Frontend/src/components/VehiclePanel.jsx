@@ -3,7 +3,7 @@ import Ubercar from '../../public/ubercar.webp'
 import ubercar2 from '../../public/ubercar2.webp'
 import ubermotorbike from '../../public/ubermotorbike.webp'
 import uberauto from '../../public/uberauto.webp'
-const VehiclePanel = (props) => {
+const VehiclePanel = ({ fare }) => {
   return (
     <div>
       <h5 className='p-3 text-center w-[90%] absolute top-0' onClick={()=>{
@@ -20,7 +20,7 @@ const VehiclePanel = (props) => {
                   <h5 className=' font-medium text-base'> 2 mins away</h5>
                   <p className=' font-normal text-xs text-gray-600' > Affordable, compact rides</p>
                 </div>
-                <h2 className='text-lg font-semibold'> $23.20</h2>
+                <h2 className='text-lg font-semibold'>{`$${fare.car}`}</h2>
               </div>
       
               <div  onClick={()=>{
@@ -32,7 +32,7 @@ const VehiclePanel = (props) => {
                   <h5 className=' font-medium text-base'> 3 mins away</h5>
                   <p className=' font-normal text-xs text-gray-600' > Affordable, motorbike rides</p>
                 </div>
-                <h2 className='text-lg font-semibold'> $33.20</h2>
+                <h2 className='text-lg font-semibold'>{`$${fare.moto}`}</h2>
               </div>
       
               <div onClick={()=>{
@@ -44,7 +44,7 @@ const VehiclePanel = (props) => {
                   <h5 className=' font-medium text-base'> 3 mins away</h5>
                   <p className=' font-normal text-xs text-gray-600' > Affordable, Auto rides</p>
                 </div>
-                <h2 className='text-lg font-semibold'> $19.20</h2>
+               <h2 className="text-lg font-semibold">{`$${fare.auto}`}</h2>
               </div>
     </div>
   )

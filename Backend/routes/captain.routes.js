@@ -435,5 +435,8 @@ router.get("/profile", verifyToken, captainController.captainProfile)
 router.get("/logout", captainController.logoutCaptain)
 
 
+router.patch('/update-status', verifyToken, captainController.captainStatusUpdate);
+
+
 
 module.exports = router;

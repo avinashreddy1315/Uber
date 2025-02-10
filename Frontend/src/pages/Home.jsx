@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
 import Uberlogo from '../../public/Uber_logo.png'
 import Map from '../../public/image.png'
@@ -13,6 +13,8 @@ import WaitingForDriver from '../components/WaitingForDriver';
 import axios from 'axios';
 import { ArrowUpDown } from "lucide-react"; // Swap icon
 import { useNavigate } from 'react-router-dom';
+import { SocketContext } from '../context/SocketContext';
+
 
 const Home = () => {
   const [pickup, setPickup] = useState('')
@@ -43,16 +45,14 @@ const Home = () => {
     fare: 0 // Get the fare for the selected vehicle 
   })
 
-  /*const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
-
-useEffect(() => {
-  if (!authToken) {
-    alert("Login expired. Please log in again.");
-    navigate('/');
-  }
-}, [authToken]);  */
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext)
 
 
+  useEffect(() =>{
+    socket.emit("join", {userType : 'user', userId : user._id})
+   
+  }, [user])
 
   
 
@@ -73,7 +73,7 @@ useEffect(() => {
       const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/map/get-suggestion`, {
         params: { input: value },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`
         }
       });
 
@@ -104,7 +104,7 @@ useEffect(() => {
       const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/map/get-suggestion`, {
         params: { input: value },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`
         }
       });
       
@@ -222,7 +222,7 @@ useEffect(() => {
       const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
         params: { pickup, destination },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`
         }
       })
       
@@ -244,7 +244,7 @@ useEffect(() => {
         vehicleType // ✅ Send correct vehicle type
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`
         }
       });
   

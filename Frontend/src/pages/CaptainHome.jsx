@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Map from'../../public/image.png'
 import Uberlogo from '../../public/Uber_logo.png'
@@ -8,12 +8,23 @@ import RidePopUp from '../components/RidePopUp'
 import gsap from 'gsap'
 import {useGSAP} from '@gsap/react';
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
+import { SocketContext } from '../context/SocketContext'
+import { CaptainDataContext } from '../context/CaptainContext'
 
 
 const CaptainHome = (props) => {
- const[ridePopupPanel, setRidePopupPanel] = useState(true)
+ const[ridePopupPanel, setRidePopupPanel] = useState(false)
  const[confirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false)
 
+ const { captain } = useContext(CaptainDataContext);
+ const { socket } = useContext(SocketContext);
+
+
+
+ useEffect(() =>{
+  //console.log(captain);
+  socket.emit("join", {userType : 'captain', userId : captain._id})
+ },[captain])
 
  const ridePopupPanelRef = useRef(null)
  const confirmRidePopupPanelRef = useRef(null)
@@ -63,7 +74,7 @@ useGSAP(function(){
     <img className='h-full w-full object-cover'  src={Map}/>
   
   </div>
-  <div className='h-2/5 p-6 '>
+  <div className='h-2/5 p-6 rounded-lg'>
       <CaptainDetails />
   </div>
   <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'> 

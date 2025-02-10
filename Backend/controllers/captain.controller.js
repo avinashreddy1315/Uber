@@ -104,6 +104,33 @@ const logoutCaptain = async (req, res) =>{
     }
 }
 
+const captainStatusUpdate = async (req, res) =>{
+    try {
+        const { newstatus } = req.body;
+       
+    
+        if (!['active', 'inactive'].includes(newstatus)) {
+          return res.status(400).json({ message: 'Invalid status value' });
+        }
+    
+        const updatedCaptain = await captainmodal.findByIdAndUpdate(
+            {_id : req.Id},
+            { status : newstatus},
+            { new: true }
+
+        );
+    
+        if (!updatedCaptain) {
+          return res.status(404).json({ message: 'Captain not found' });
+        }
+    
+        res.status(200).json({ message: 'Status updated successfully', captain: updatedCaptain });
+      } catch (error) {
+        console.error('Error updating captain status:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+}
 
 
-module.exports = {registerCaptain, loginCaptain, captainProfile, logoutCaptain}
+
+module.exports = {registerCaptain, loginCaptain, captainProfile, logoutCaptain, captainStatusUpdate}

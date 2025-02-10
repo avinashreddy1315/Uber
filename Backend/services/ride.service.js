@@ -83,7 +83,8 @@ const createRide = async({user, pickup, destination, vehicleType}) =>{
         pickup,
         destination,
         fare: fare[ vehicleType ],
-        otp : generateOtp()
+        otp : generateOtp(),
+        vehicleType
     })
 
 

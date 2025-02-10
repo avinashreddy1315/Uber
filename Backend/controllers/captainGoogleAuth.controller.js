@@ -26,7 +26,7 @@ const googleCaptainLogin = async (req, res) =>{
         }else{
             //If user doen't exsits
             return res.status(302).json({
-                message : "user not found, redirecting to registation",
+                message : "Captain not found, redirecting to registation",
                 redirectUrl: '/captain-signup',
                 captainDeatils: {
                     email: email,

@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Start from './pages/Start';
 import UserLogin from './pages/UserLogin';
@@ -7,6 +7,7 @@ import UserSignup from './pages/UserSignup';
 import CaptainSignup from './pages/CaptainSignup';
 import Captainlogin from './pages/Captainlogin';
 import { UserDataContext } from './context/UserContext';
+import { CaptainDataContext } from './context/CaptainContext';
 import Home from './pages/Home';
 import CaptainHome from './pages/CaptainHome';
 import UserProtectedWrapper from './components/UserProtectedWrapper';
@@ -15,7 +16,7 @@ import CaptainProtectedWrapper from './components/CaptainProtectedWrapper';
 import CaptainLogout from './pages/CaptainLogout';
 import Riding from './components/Riding';
 import CaptainRiding from './pages/CaptainRiding';
-import 'remixicon/fonts/remixicon.css'
+import 'remixicon/fonts/remixicon.css';
 
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
@@ -36,6 +37,7 @@ const AnimatedRoute = ({ element }) => (
 
 const App = () => {
   const ans = useContext(UserDataContext);
+  const cap = useContext(CaptainDataContext);
   const location = useLocation();
 
   return (
@@ -44,12 +46,24 @@ const App = () => {
         <Routes location={location} key={location.pathname}>
           {/* Public Routes */}
           <Route path='/' element={<AnimatedRoute element={<Start />} />} />
-          <Route path='/login' element={<AnimatedRoute element={<UserLogin />} />} />
+
+          {/* ✅ Prevent flickering by waiting for `isLoading` to complete */}
+          <Route path='/login' element={
+            ans.isLoading ? null : (ans.user ? <Navigate to='/home' replace /> : <AnimatedRoute element={<UserLogin />} />)
+          } />
+          <Route path='/signup' element={
+            ans.isLoading ? null : (ans.user ? <Navigate to='/home' replace /> : <AnimatedRoute element={<UserSignup />} />)
+          } />
+
+          <Route path='/captain-login' element={
+            cap.isLoading ? null : (cap.captain ? <Navigate to='/captain-home' replace /> : <AnimatedRoute element={<Captainlogin />} />)
+          } />
+          <Route path='/captain-signup' element={
+            cap.isLoading ? null : (cap.captain ? <Navigate to='/captain-home' replace /> : <AnimatedRoute element={<CaptainSignup />} />)
+          } />
+
           <Route path='/riding' element={<AnimatedRoute element={<Riding />} />} />
           <Route path='/captain-riding' element={<AnimatedRoute element={<CaptainRiding />} />} />
-          <Route path='/signup' element={<AnimatedRoute element={<UserSignup />} />} />
-          <Route path='/captain-login' element={<AnimatedRoute element={<Captainlogin />} />} />
-          <Route path='/captain-signup' element={<AnimatedRoute element={<CaptainSignup />} />} />
 
           {/* Protected Routes */}
           <Route element={<UserProtectedWrapper />}>

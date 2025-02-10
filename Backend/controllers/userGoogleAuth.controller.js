@@ -21,7 +21,7 @@ const googleUserLogin = async (req, res) =>{
         if(user){
             //If user exsits
             const token = user.generateAuthToken();
-            res.cookie('token', token);
+            res.cookie('user_token', token);
             return res.status(200).json({message: 'User Loggedin Succesfull', token, user})
         }else{
             //If user doen't exsits

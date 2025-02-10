@@ -58,6 +58,11 @@ const rideSchema = new mongoose.Schema({
         type : String,
         required : true,
         select: false
+    },
+
+    vehicleType :{
+        type : String,
+        required : true,
     }
 })
 

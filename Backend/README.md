@@ -226,6 +226,7 @@ Occurs when the server encounters an unexpected error.
 
 # User Logout API
 
+
 This API endpoint Logouts the user.
 
 ## Endpoint: `/users/logout`
@@ -273,7 +274,6 @@ Occurs when the server encounters an unexpected error.
 }
 ```
 
----
 ---
 # ii) Captain Api's
 ---
@@ -652,7 +652,7 @@ Occurs when the server encounters an unexpected error.
 ```
 
 
-# Maps API
+# iii) Maps API
 
 ## Endpoint: `/map/get-coordinates`
 
@@ -820,7 +820,7 @@ Occurs if an error happens while fetching suggestions.
 
 ---
 
-# Ride API
+# iv) Ride API
 
 ## Endpoint: `/rides/create`
 
@@ -923,19 +923,4 @@ Occurs if `pickup` or `destination` is invalid.
 ```
 
 ---
-
-# Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
----
-
-# License
-
-This project is licensed under the MIT License.
-
-
-
-
-
 

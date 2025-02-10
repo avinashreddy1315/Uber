@@ -37,7 +37,7 @@ const UserLogin = () => {
       if (response.status === 200) {
         //console.log(response.data.message);
         const data = response.data;
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('user_token', data.token)
         setUser(data.user);
         setLoading(false);
         navigate('/home');
@@ -73,7 +73,7 @@ const UserLogin = () => {
       if (res.status === 200) {
         alert("Login Successful!");
         setLoading(false);
-        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('user_token', res.data.token)
         navigate('/home');
       }
       // ✅ Handle Redirect to Signup
@@ -100,7 +100,7 @@ const UserLogin = () => {
   };
 
   return (
-    <div className='p-8 min-h-screen flex flex-col justify-between overflow-auto'>
+    <div className='p-8 min-h-screen flex flex-col justify-between overflow-aut'>
       <div>
         <Link to="/">
           <img className='w-16 mb-10' src={Uberlogo} alt="Uber Logo" />
@@ -142,18 +142,21 @@ const UserLogin = () => {
 
               <button className='bg-[#111] text-white font-semibold mb-7 rounded px-4 py-2 w-full text-lg'>Login</button>
 
+              {/* error message */}
+            <div>
+              {errorMessage ? <p className='pt-2 text-red-700'>{errorMessage}</p> : <p></p>}
+            </div>
 
             </form>
+
+            
 
             {/*signup link */}
             <div>
               <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create New Account</Link></p>
             </div>
 
-            {/* error message */}
-            <div>
-              {errorMessage ? <p className='pt-2 text-red-700'>{errorMessage}</p> : <p></p>}
-            </div>
+            
 
             {/* Google Login Button */}
             <div>

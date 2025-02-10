@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
 import Uberlogo from '../../public/Uber_logo.png'
 import Map from '../../public/image.png'
@@ -6,16 +6,13 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel';
-import Ubercar from '../../public/ubercar.webp'
-import ubercar2 from '../../public/ubercar2.webp'
-import ubermotorbike from '../../public/ubermotorbike.webp'
-import uberauto from '../../public/uberauto.webp'
 import VehiclePanel from '../components/VehiclePanel';
 import ConfirmRide from '../components/ConfirmRide';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
 import axios from 'axios';
 import { ArrowUpDown } from "lucide-react"; // Swap icon
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [pickup, setPickup] = useState('')
@@ -38,6 +35,28 @@ const Home = () => {
   const [vehicleType, setVehicleType] = useState(null)
   const [ride, setRide] = useState(null)
   const [pdErrorMessage, setPDErrorMessage] = useState('')
+  const navigate = useNavigate();
+  const [userRide, setUserRide] = useState({
+    pickup: "",// Store pickup location
+    destination: "", // Store destination
+    vehicleType: "", // Store selected vehicle
+    fare: 0 // Get the fare for the selected vehicle 
+  })
+
+  /*const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
+
+useEffect(() => {
+  if (!authToken) {
+    alert("Login expired. Please log in again.");
+    navigate('/');
+  }
+}, [authToken]);  */
+
+
+
+  
+
+  
 
 
   const handlePickupChange = async (e) => {
@@ -131,7 +150,7 @@ const Home = () => {
     }
   }, [panelOpen])
 
-  const { user } = React.useContext(UserDataContext);
+ 
   useGSAP(function () {
     if (vehiclePanel) {
       gsap.to(vehiclePanelRef.current, {
@@ -188,13 +207,16 @@ const Home = () => {
   }, [waitingForDriver])
 
 
+  //this is the function to find the trip and prices
   async function findTrip() {
     
-    //console.log(pickup, destination);
     if(!pickup || !destination){
       setPDErrorMessage('Please enter your pickup and destination to book ride');
       return;
     }
+
+   userRide.pickup = pickup;
+   userRide.destination = destination;
    
     try{
       const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
@@ -203,7 +225,7 @@ const Home = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
-      //console.log(response);
+      
       setFare(response.data)
       setVehiclePanel(true)
       setPanelOpen(false) 
@@ -211,26 +233,29 @@ const Home = () => {
       console.error(error);
     }
     
-
-
-    //
-
-
   }
 
+  //this is for once the user had selected vehicletype then to craete na ride
   async function createRide() {
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`, {
-      pickup,
-      destination,
-      vehicleType
-    }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-
-
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`, {
+        pickup,
+        destination,
+        vehicleType // ✅ Send correct vehicle type
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+  
+      console.log("Ride Created:", response.data);
+      setRide(response.data);
+    
+    } catch (error) {
+      console.error("Error creating ride:", error);
+    }
   }
+  
 
   {/* for swapping the pickup and destination */}
   const swapLocations = () => {
@@ -258,7 +283,7 @@ const claerPD = () =>{
         <img className='h-full w-full object-cover' src={Map} alt=""></img>
       </div>
       <div className='flex flex-col justify-end h-screen absolute top-0 w-full'>
-      <div className="p-6 bg-white relative min-h-[30%] max-h-[40vh]">
+      <div className="p-6 bg-white relative min-h-[30%] max-h-[45vh]">
           <h5 ref={panelCloseRef} onClick={() => {
             setPanelOpen(false)
             setPDErrorMessage('');
@@ -337,19 +362,28 @@ const claerPD = () =>{
           setConfirmRidePanel={setConfirmRidePanel}
           setVehiclePanel={setVehiclePanel}
           fare={fare}
+          setUserRide={setUserRide}
+          setVehicleType={setVehicleType}
+         
         />
           
       </div>
 
-      <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
+      <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12 rounded-t-xl'>
         <ConfirmRide
           setConfirmRidePanel={setConfirmRidePanel}
-          setVehicleFound={setVehicleFound} />
+          setVehicleFound={setVehicleFound}
+          userRide={userRide} 
+          createRide={createRide}
+        />
+         
       </div>
 
       <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
         <LookingForDriver
-          setVehicleFound={setVehicleFound} />
+          setVehicleFound={setVehicleFound}
+          userRide={userRide} />
+          
       </div>
 
       <div ref={waitingForDriverRef} className='fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12'>

@@ -9,14 +9,16 @@ import CaptainContext from './context/CaptainContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <BrowserRouter>
     <CaptainContext>
       <UserContext>
-        <BrowserRouter>
+        
           <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <App />
           </GoogleOAuthProvider>
-        </BrowserRouter>
+        
       </UserContext>
     </CaptainContext>
+    </BrowserRouter>
   </StrictMode>,
 )

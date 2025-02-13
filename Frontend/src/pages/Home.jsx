@@ -51,6 +51,12 @@ const Home = () => {
 
   useEffect(() =>{
     socket.emit("join", {userType : 'user', userId : user._id})
+    socket.on('ride-confirmed', ride =>{
+      setVehicleFound(false)
+        setWaitingForDriver(true)
+        setRide(ride)
+      console.log(ride);
+    })
    
   }, [user])
 
@@ -248,7 +254,7 @@ const Home = () => {
         }
       });
   
-      console.log("Ride Created:", response.data);
+      //console.log("Ride Created:", response.data);
       setRide(response.data);
     
     } catch (error) {
@@ -357,7 +363,7 @@ const claerPD = () =>{
 
         </div>
       </div>
-      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
+      <div ref={vehiclePanelRef} className='min-h-[30%] fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12 rounded-t-xl'>
         <VehiclePanel
           setConfirmRidePanel={setConfirmRidePanel}
           setVehiclePanel={setVehiclePanel}
@@ -379,15 +385,18 @@ const claerPD = () =>{
          
       </div>
 
-      <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
+      <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12 rounded-t-3xl'>
         <LookingForDriver
           setVehicleFound={setVehicleFound}
           userRide={userRide} />
           
       </div>
 
-      <div ref={waitingForDriverRef} className='fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12'>
+      <div ref={waitingForDriverRef} className='min-h-[45%] fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12 rounded-t-3xl'>
         <WaitingForDriver
+          ride={ride}
+          setVehicleFound={setVehicleFound}
+          setWaitingForDriver={setWaitingForDriver}
           waitingForDriver={waitingForDriver} />
       </div>
 

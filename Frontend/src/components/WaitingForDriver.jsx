@@ -1,43 +1,78 @@
 import React from 'react'
+import ubercar2 from '../../public/ubercar2.webp';
+import ubermotorbike from '../../public/ubermotorbike.webp';
+import uberauto from '../../public/uberauto.webp';
 
 const WaitingForDriver = (props) => {
+
+
+  
+  const vehicleType = props.ride?.captain?.vehicle?.vehicleType;
+
+  // Map vehicle type to corresponding image
+  const vehicleImages = {
+    car: ubercar2,
+    moto: ubermotorbike,
+    auto: uberauto
+  };
+
+  // Select the image based on vehicleType (default to car if undefined)
+  const vehicleImage = vehicleImages[vehicleType] || ubercar2;
+
+
   return (
     <div>
       <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
         props.waitingForDriver(false)
       }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
 
+<div className="flex justify-center">
+        <img className='h-24' src={vehicleImage} alt={vehicleType} />
+      </div>
+
       <div className='flex items-center justify-between'>
-        <img className='h-12' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
-        <div className='text-right'>
-          <h2 className='text-lg font-medium capitalize'>{props.ride?.captain.fullname.firstname}</h2>
-          <h4 className='text-xl font-semibold -mt-1 -mb-1'>{props.ride?.captain.vehicle.plate}</h4>
-          <p className='text-sm text-gray-600'>Maruti Suzuki Alto</p>
-          <h1 className='text-lg font-semibold'>  {props.ride?.otp} </h1>
+        <div>
+          <div className=' flex-row'>
+            <p>Captain Name</p>
+            <h2 className='text-xl font-medium font-extrabold capitalize pl-3'>{props.ride?.captain?.fullname?.firstname + " " +props.ride?.captain?.fullname?.lastname}</h2>
+          </div>
+          <div>
+            <p>Vehicle Plate</p>
+            <h4 className='text-xl font-extrabold -mt-1 -mb-1 pl-3'>{props.ride?.captain?.vehicle?.plate}</h4>
+          </div>
+          
         </div>
+        <div>
+          <h1 className='text-lg font-extrabold text-center'>OTP</h1>
+          <h2 className='text-3xl font-extrabold'>  {props.ride?.otp} </h2>
+        </div>
+        
       </div>
 
       <div className='flex gap-2 justify-between flex-col items-center'>
         <div className='w-full mt-5'>
           <div className='flex items-center gap-5 p-3 border-b-2'>
-            <i className="ri-map-pin-user-fill"></i>
+            <i className="ri-map-pin-user-fill text-2xl"></i>
             <div>
-              <h3 className='text-lg font-medium'>562/11-A</h3>
-              <p className='text-sm -mt-1 text-gray-600'>{props.ride?.pickup}</p>
+              <p className='text-sm -mt-1 text-gray-600'>pickup</p>
+              <h3 className='text-lg font-medium'>{props.ride?.pickup}</h3>
+              
             </div>
           </div>
           <div className='flex items-center gap-5 p-3 border-b-2'>
-            <i className="text-lg ri-map-pin-2-fill"></i>
+            <i className="text-2xl ri-map-pin-2-fill"></i>
             <div>
-              <h3 className='text-lg font-medium'>562/11-A</h3>
-              <p className='text-sm -mt-1 text-gray-600'>{props.ride?.destination}</p>
+            <p className='text-sm -mt-1 text-gray-600'>destination</p>
+              <h3 className='text-lg font-medium'>{props.ride?.destination}</h3>
+              
             </div>
           </div>
           <div className='flex items-center gap-5 p-3'>
-            <i className="ri-currency-line"></i>
+            <i className="ri-currency-line text-2xl"></i>
             <div>
+            <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
               <h3 className='text-lg font-medium'>₹{props.ride?.fare} </h3>
-              <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
+              
             </div>
           </div>
         </div>

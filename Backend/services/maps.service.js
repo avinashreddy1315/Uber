@@ -1,4 +1,5 @@
 const { default: axios } = require("axios");
+const captainModel = require('../models/captain.model')
 
 const getAddressCoordinate = async (address) =>{
     const apiKey = process.env.GOOGLE_MAPS_API;
@@ -80,8 +81,48 @@ const getSuggestions = async (address) =>{
 }
 
 
+const getCaptainsInTheRadius = async(ltd, lng, radius, vehicleType) =>{
+    // radius in km
+
+
+    const captains = await captainModel.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [ [ ltd, lng ], radius / 6371 ]
+            }
+        },
+        status : 'active',
+        "vehicle.vehicleType": vehicleType // ✅ Match requested vehicle type
+    });
+    //console.log(captains);
+    return captains;
+}
+
+
+
+const getCoordinatesToAddress = async (latitude, longitude, pickup) => {
+    try {
+        const apiKey = process.env.GOOGLE_MAPS_API; // Replace with your Google API Key
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+
+        const response = await axios.get(url);
+        if (response.data.status === 'OK') {
+            const driverloaction =  response.data.results[0].formatted_address; // Returns the first result
+            //console.log("driverlocation :", driverloaction);
+            return getDistanceAndTime(pickup, driverloaction);
+        } else {
+            throw new Error('No address found');
+        }
+    } catch (error) {
+        console.error('Error fetching address:', error.message);
+        return null;
+    }
+};
 
 
 
 
-module.exports ={getAddressCoordinate, getDistanceAndTime, getSuggestions}
+
+
+
+module.exports ={getAddressCoordinate, getDistanceAndTime, getSuggestions, getCaptainsInTheRadius, getCoordinatesToAddress}

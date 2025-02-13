@@ -10,16 +10,18 @@ import SocketProvider from './context/SocketContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <SocketProvider>
+    
       <BrowserRouter>
         <CaptainContext>
           <UserContext>
+          <SocketProvider>
             <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
               <App />
             </GoogleOAuthProvider>
+            </SocketProvider>
           </UserContext>
         </CaptainContext>
       </BrowserRouter>
-    </SocketProvider>
+   
   </StrictMode>,
 )

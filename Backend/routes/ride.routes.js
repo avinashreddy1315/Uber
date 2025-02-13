@@ -29,6 +29,16 @@ router.get('/get-fare',
 
 
 
+router.post('/confirm', 
+    [
+        body('rideId').isMongoId().withMessage('Invalid ride id'),
+        body('captainId').isMongoId().withMessage('Invalid captain id')
+    ],
+    verifyToken, 
+    rideController.confirmRide)
+
+
+
 
 
 

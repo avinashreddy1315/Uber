@@ -38,18 +38,18 @@ function initializeSocket(server) {
 
         socket.on('update-location-captain', async (data) => {
             try {
-                console.log("Received location update:", data);
+                //console.log("Received location update:", data);
 
-                if (!data || !data.userId || !data.location || !data.location.lat || !data.location.lng) {
+                if (!data || !data.userId || !data.location || !data.location.ltd || !data.location.lng) {
                     console.error("Invalid location update data received:", data);
                     return; // Ignore invalid data
                 }
 
                 const { userId, location } = data;
-
+                
                 await captainModel.findByIdAndUpdate(userId, {
                     location: {
-                        lat: location.lat,  
+                        ltd: location.ltd,
                         lng: location.lng
                     }
                 });
@@ -65,6 +65,7 @@ function initializeSocket(server) {
 }
 
 const sendMessageToSocketId = (socketId, messageObject) => {
+    //console.log(`sending message to ${socketId}`, messageObject)
     if (io) {
         io.to(socketId).emit(messageObject.event, messageObject.data);
     } else {

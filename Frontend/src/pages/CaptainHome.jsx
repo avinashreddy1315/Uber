@@ -12,6 +12,7 @@ import { SocketContext } from '../context/SocketContext'
 import { CaptainDataContext } from '../context/CaptainContext'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LiveTracking from '../components/LiveTracking'
 
 
 const CaptainHome = (props) => {
@@ -34,38 +35,8 @@ const CaptainHome = (props) => {
     }
   }, [captainToken, captain, navigate]);
 
-  // ✅ Only run this effect if captain exists
-  /*useEffect(() => {
-    if (!captain || !captainToken) return;
 
-    socket.emit("join", { userType: 'captain', userId: captain._id });
 
-    const updateLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-
-          console.log({
-            userId: captain._id,
-            location: {
-              ltd: position.coords.latitude, 
-              lng: position.coords.longitude
-            }})
-
-          socket.emit('update-location-captain', {
-            userId: captain._id,
-            location: {
-              ltd: position.coords.latitude,  // ✅ Fixed property name
-              lng: position.coords.longitude
-            }
-          });
-        });
-      }
-    };
-
-    const locationInterval = setInterval(updateLocation, 10000);
-    updateLocation();
-
-  }, []);  */
 
 
   useEffect(() => {
@@ -79,13 +50,7 @@ const CaptainHome = (props) => {
     const updateLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
-          /*console.log({
-            userId: captain._id,
-            location: {
-              ltd: position.coords.latitude,
-              lng: position.coords.longitude
-            }
-          }) */
+          
           socket.emit('update-location-captain', {
             userId: captain._id,
             location: {
@@ -101,26 +66,21 @@ const CaptainHome = (props) => {
     updateLocation()
 
 
-    // Cleanup function: runs when component unmounts or dependencies change
-    /*return () => {
-        clearInterval(locationInterval);  // ✅ Clear interval
-        socket.emit("leave", { userId: captain?._id });  // ✅ Inform server captain left
-        console.log("Captain logged out, stopping location updates");
-    }; */
+   
 
-    socket.on('new-ride', (data) => {
-      //console.log('there is an new ride requested', data);
-      setRidePopupPanel(true);
-      setRide(data);
-
-    })
+    
 
 
 
   }, []); // ✅ Dependency array includes `captain` and `captainToken`
 
 
+  socket.on('new-ride', (data) => {
+    
+    setRidePopupPanel(true);
+    setRide(data);
 
+  })
 
 
 
@@ -141,8 +101,7 @@ const CaptainHome = (props) => {
           Authorization: `Bearer ${localStorage.getItem('captain_token')}`
         }
       }) 
-      //console.log(response);
-      //console.log("hi this is to conform the ride");
+      
 
     }catch(error){
       console.error(error);
@@ -199,7 +158,7 @@ const CaptainHome = (props) => {
 
 
       <div className='h-3/5'>
-        <img className='h-full w-full object-cover' src={Map} />
+        <LiveTracking/>
 
       </div>
       <div className='h-2/5 p-6 rounded-lg'>
@@ -218,6 +177,7 @@ const CaptainHome = (props) => {
         <ConfirmRidePopUp
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           setRidePopupPanel={setRidePopupPanel}
+          ride={ride}
         />
       </div>
     </div>

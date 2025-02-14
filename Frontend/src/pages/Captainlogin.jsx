@@ -29,9 +29,9 @@ const Captainlogin = () => {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, CaptainloginData);
 
       if (response.status === 200) {
-        //console.log(response.data.message);
+        
         const data = response.data;
-        //console.log(data)
+      
         localStorage.setItem('captain_token', data.token)
         setCaptain(data.captain);
         setLoading(false)
@@ -51,7 +51,7 @@ const Captainlogin = () => {
   // Handle Google Login Success
   const handleUserLogin = async (credentialResponse) => {
     const tokenId = credentialResponse.credential;  // Get the Google token
-    //console.log("Google Token ID:", tokenId);
+   
     setLoading(true);
     try {
       const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/google-login-captain`, {
@@ -62,7 +62,7 @@ const Captainlogin = () => {
         }
       });
   
-      console.log(res.data.captain);
+    
      
   
       // ✅ Handle Successful Login

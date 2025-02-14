@@ -13,14 +13,14 @@ function initializeSocket(server) {
     });
 
     io.on('connection', (socket) => {
-        console.log(`Client connected: ${socket.id}`);
+       
 
         socket.on('join', async (data) => {
             try {
-                console.log("Received join event with data:", data);
+                
 
                 if (!data || !data.userId || !data.userType) {
-                    console.error("Invalid join data received:", data);
+                   
                     return; // Ignore invalid data
                 }
 
@@ -38,7 +38,7 @@ function initializeSocket(server) {
 
         socket.on('update-location-captain', async (data) => {
             try {
-                //console.log("Received location update:", data);
+               
 
                 if (!data || !data.userId || !data.location || !data.location.ltd || !data.location.lng) {
                     console.error("Invalid location update data received:", data);
@@ -65,8 +65,9 @@ function initializeSocket(server) {
 }
 
 const sendMessageToSocketId = (socketId, messageObject) => {
-    //console.log(`sending message to ${socketId}`, messageObject)
+   
     if (io) {
+       
         io.to(socketId).emit(messageObject.event, messageObject.data);
     } else {
         console.log('Socket.io not initialized.');

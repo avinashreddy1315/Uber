@@ -58,11 +58,7 @@ async function getFare(pickup, destination) {
 
 
 const generateOtp = (length = 6) => {
-    /*const buffer = crypto.randomBytes(length);
-    const otp = Array.from(buffer)
-        .map(byte => (byte % 10).toString()) // Map each byte to a digit (0-9)
-        .join('');
-    console.log(otp); */
+  
     const otp = crypto.randomInt(10 ** (length - 1), 10 ** length).toString();
 
     return otp;
@@ -75,9 +71,9 @@ const createRide = async ({ user, pickup, destination, vehicleType }) => {
         throw new Error('All fields are required');
     }
 
-    //console.log(user, pickup, destination, vehicleType);
+    
     const fare = await getFare(pickup, destination);
-    //console.log(fare);
+ 
     const ride = rideModel.create({
         user,
         pickup,
@@ -115,12 +111,12 @@ throw new Error('Ride id is required');
 
 
 
-const startRide = async ({ rideId, otp, captain }) => {
+const startRide = async ({ rideId, otp }) => {
     if (!rideId || !otp) {
-        throw new Error('Ride id and OTP are required');
+        throw new Error('Ride ID and OTP are required');
     }
 
-    const ride = await rideModel.findOne({
+    let ride = await rideModel.findOne({
         _id: rideId
     }).populate('user').populate('captain').select('+otp');
 
@@ -136,21 +132,25 @@ const startRide = async ({ rideId, otp, captain }) => {
         throw new Error('Invalid OTP');
     }
 
-    await rideModel.findOneAndUpdate({_id: rideId}, {
-        status: 'ongoing'
-    })
+    // ✅ Update and return the updated ride
+    ride = await rideModel.findOneAndUpdate(
+        { _id: rideId },
+        { status: 'ongoing' },
+        { new: true } // ✅ Ensures updated ride is returned
+    ).populate('user').populate('captain');
 
     return ride;
-}
+};
+
 
 const endRide = async ({ rideId, captain }) => {
     if (!rideId) {
         throw new Error('Ride id is required');
     }
 
-    const ride = await rideModel.findOne({
+    let ride = await rideModel.findOne({
         _id: rideId,
-        captain: captain._id
+        captain: captain
     }).populate('user').populate('captain').select('+otp');
 
     if (!ride) {
@@ -161,11 +161,12 @@ const endRide = async ({ rideId, captain }) => {
         throw new Error('Ride not ongoing');
     }
 
-    await rideModel.findOneAndUpdate({
-        _id: rideId
-    }, {
-        status: 'completed'
-    })
+    ride = await rideModel.findOneAndUpdate(
+        {_id: rideId}, 
+        {status: 'completed'},
+        { new: true }
+    ).populate('user').populate('captain');
+
 
     return ride;
 }

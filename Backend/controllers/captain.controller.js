@@ -68,8 +68,7 @@ const loginCaptain = async (req, res, next) =>{
         return res.status(200).json({message : "Captain Logged In succesfully", token, captain})
 
     }catch(error){
-        console.log(error);
-        return res.status(501).json({message : "Internal server Error"});
+        return res.status(501).json({message : "Internal server Error", error});
     }
 
 

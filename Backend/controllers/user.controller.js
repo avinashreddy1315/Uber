@@ -13,10 +13,10 @@ const registerUser = async (req, res, next) =>{
     }
 
     const {fullname, email, password} = req.body;
-    //console.log(req.body);
+  
     
     try{
-        //console.log(req.body);
+        
         const userEmail = await userModel.findOne({email});
         if(userEmail){
             return res.status(401).json({message : 'Email is alredy Registred. Please Login'})

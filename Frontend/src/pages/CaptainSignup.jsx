@@ -46,20 +46,20 @@ const CaptainSignup = () => {
    
 
     try {
-      //console.log(captainData)
+      
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
 
       if (response.status === 200) {
         const data = response.data
         localStorage.setItem('token', data.token)
         setCaptain(data.newCaptain)
-        //console.log(data)
+        
         localStorage.setItem('captain_token', data.token)
         navigate('/captain-home')
       }
 
     } catch (error) {
-      console.log(error.response.data.message);
+     
       setErrorMessage(error.response.data.message);
     }
 

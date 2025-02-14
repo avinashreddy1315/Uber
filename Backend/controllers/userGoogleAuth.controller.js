@@ -6,7 +6,7 @@ const {verifyGoogleToken} = require('../services/googleAuth.service');
 const googleUserLogin = async (req, res) =>{
 
     const {tokenId} = req.body;
-    //console.log(`tokenId from google : ${tokenId}`)
+  
     try{
         const payload = await verifyGoogleToken(tokenId);
 

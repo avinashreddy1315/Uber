@@ -14,6 +14,7 @@ import axios from 'axios';
 import { ArrowUpDown } from "lucide-react"; // Swap icon
 import { useNavigate } from 'react-router-dom';
 import { SocketContext } from '../context/SocketContext';
+import LiveTracking from '../components/LiveTracking';
 
 
 const Home = () => {
@@ -51,16 +52,31 @@ const Home = () => {
 
   useEffect(() =>{
     socket.emit("join", {userType : 'user', userId : user._id})
+
+    
     socket.on('ride-confirmed', ride =>{
       setVehicleFound(false)
         setWaitingForDriver(true)
         setRide(ride)
-      console.log(ride);
+     
     })
    
   }, [user])
 
+
+
+  socket.on('ride-started', ride => {
   
+    setWaitingForDriver(false)
+    navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
+})
+
+
+socket.on('ride-ended', ride => {
+  
+  setWaitingForDriver(false)
+  navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
+})
 
   
 
@@ -254,7 +270,7 @@ const Home = () => {
         }
       });
   
-      //console.log("Ride Created:", response.data);
+     
       setRide(response.data);
     
     } catch (error) {
@@ -285,8 +301,9 @@ const claerPD = () =>{
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-5 top-5 ' src={Uberlogo} alt="Uber Logo" />
 
-      <div className='h-screen w-screen'>
-        <img className='h-full w-full object-cover' src={Map} alt=""></img>
+     <div className='h-3/5'>
+        <LiveTracking/>
+
       </div>
       <div className='flex flex-col justify-end h-screen absolute top-0 w-full'>
       <div className="p-6 bg-white relative min-h-[30%] max-h-[45vh]">
@@ -375,7 +392,7 @@ const claerPD = () =>{
           
       </div>
 
-      <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12 rounded-t-xl'>
+      <div ref={confirmRidePanelRef} className='min-h-[35%] fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12 rounded-t-xl'>
         <ConfirmRide
           setConfirmRidePanel={setConfirmRidePanel}
           setVehicleFound={setVehicleFound}

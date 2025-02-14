@@ -24,7 +24,7 @@ const UserLogin = () => {
     setLoading(true);
     e.preventDefault();
     setErrorMessage('')
-    //console.log(email, password);
+   
 
     const userLoginData = {
       email: email,
@@ -35,7 +35,7 @@ const UserLogin = () => {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userLoginData);
 
       if (response.status === 200) {
-        //console.log(response.data.message);
+       
         const data = response.data;
         localStorage.setItem('user_token', data.token)
         setUser(data.user);
@@ -55,7 +55,7 @@ const UserLogin = () => {
   // Handle Google Login Success
   const handleUserLogin = async (credentialResponse) => {
     const tokenId = credentialResponse.credential;  // Get the Google token
-    //console.log("Google Token ID:", tokenId);
+   
     setLoading(true);
     try {
       const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/google-login-user`, {
@@ -66,7 +66,7 @@ const UserLogin = () => {
         }
       });
 
-      //console.log(res.data);
+    
       setUser(res.data.user)
 
       // ✅ Handle Successful Login

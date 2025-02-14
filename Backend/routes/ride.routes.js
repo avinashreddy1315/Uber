@@ -38,6 +38,19 @@ router.post('/confirm',
     rideController.confirmRide)
 
 
+router.get('/start-ride',
+    [
+    query('rideId').isMongoId().withMessage('Invalid ride id'),
+    query('otp').isString().isLength({ min: 6, max: 6 }).withMessage('Invalid OTP'),],
+    verifyToken,
+    rideController.startRide
+)
+
+router.post('/end-ride',[
+    body('rideId').isMongoId().withMessage('Invalid ride id')],
+    verifyToken,
+    rideController.endRide
+)
 
 
 

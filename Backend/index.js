@@ -1,5 +1,6 @@
 
 const express = require('express');
+const router = express.Router()
 const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
@@ -56,6 +57,10 @@ app.use('/api/auth', gogleAuthRouter);
 app.use('/map', mapRouter);
 app.use('/rides', rideRouter);
 
+
+
+
+
 app.use('/', (req, res) => {
     res.send("<h1>Welcome to Uber</h1>");
 });
@@ -73,4 +78,3 @@ server.listen(PORT, () => {  // ✅ Corrected to use `server.listen` instead of 
 
 
 
-//module.exports = app;

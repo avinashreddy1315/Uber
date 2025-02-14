@@ -94,7 +94,7 @@ const getCaptainsInTheRadius = async(ltd, lng, radius, vehicleType) =>{
         status : 'active',
         "vehicle.vehicleType": vehicleType // ✅ Match requested vehicle type
     });
-    //console.log(captains);
+   
     return captains;
 }
 
@@ -108,7 +108,7 @@ const getCoordinatesToAddress = async (latitude, longitude, pickup) => {
         const response = await axios.get(url);
         if (response.data.status === 'OK') {
             const driverloaction =  response.data.results[0].formatted_address; // Returns the first result
-            //console.log("driverlocation :", driverloaction);
+          
             return getDistanceAndTime(pickup, driverloaction);
         } else {
             throw new Error('No address found');

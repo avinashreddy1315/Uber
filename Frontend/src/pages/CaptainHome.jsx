@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Map from '../../public/image.png'
-import Uberlogo from '../../public/Uber_logo.png'
-import Random from '../../public/Random.jpg'
+
+import Uberlogo from '../assets/Uber_logo.png'
+import Random from '../assets/Random.jpg'
 import CaptainDetails from '../components/CaptainDetails'
 import RidePopUp from '../components/RidePopUp'
 import gsap from 'gsap'

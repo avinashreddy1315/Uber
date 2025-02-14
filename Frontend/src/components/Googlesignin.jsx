@@ -1,5 +1,5 @@
 import React from 'react'
-import Google from '../../public/google.png'
+import Google from '../assets/google.png'
 
 const Googlesignin = ({ onClick }) => {
   return (

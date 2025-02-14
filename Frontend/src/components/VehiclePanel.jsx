@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Ubercar from '../../public/ubercar.webp';
-import ubercar2 from '../../public/ubercar2.webp';
-import ubermotorbike from '../../public/ubermotorbike.webp';
-import uberauto from '../../public/uberauto.webp';
+
+import ubercar2 from '../assets/ubercar2.webp';
+import ubermotorbike from '../assets/ubermotorbike.webp';
+import uberauto from '../assets/uberauto.webp';
 
 const VehiclePanel = (props) => {
   // State to track selected vehicle (default: UberGo)

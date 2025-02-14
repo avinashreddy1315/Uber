@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
-import Uberlogo from '../../public/Uber_logo.png'
-import Map from '../../public/image.png'
+import Uberlogo from '../assets/Uber_logo.png'
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css'

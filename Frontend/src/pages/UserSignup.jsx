@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Uberlogo from '../../public/Uber_logo.png';
+import Uberlogo from '../assets/Uber_logo.png';
 import axios from 'axios';
 import { UserDataContext } from '../context/UserContext';
 

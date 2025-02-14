@@ -1,6 +1,6 @@
 import React from 'react'
-import ubercar2 from '../../public/ubercar2.webp'
-import Random_2 from '../../public/Random_2.jpg'
+import ubercar2 from '../assets/ubercar2.webp'
+import Random_2 from '../assets/Random_2.jpg'
 
 const RidePopUp = (props) => {
   return (

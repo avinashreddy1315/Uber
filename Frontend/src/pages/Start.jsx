@@ -1,7 +1,7 @@
 import React from 'react'
-import traffiu from '../../public/traffic.webp'
+import traffiu from '../assets/traffic.webp'
 import { Link } from 'react-router-dom'
-import Uberlogo from '../../public/Uber_logo.png'
+import Uberlogo from '../assets/Uber_logo.png'
 const Start = () => {
   return (
     <div >

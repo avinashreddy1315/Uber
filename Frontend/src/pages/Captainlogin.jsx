@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import Uberlogo from '../../public/Uber_logo.png'
+import Uberlogo from '../assets/Uber_logo.png'
 import { GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { CaptainDataContext } from '../context/CaptainContext';

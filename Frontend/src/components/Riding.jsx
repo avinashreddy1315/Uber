@@ -1,9 +1,9 @@
 import React, { useEffect, useContext } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import Map from '../../public/image.png';
-import ubercar2 from '../../public/ubercar2.webp';
-import ubermotorbike from '../../public/ubermotorbike.webp';
-import uberauto from '../../public/uberauto.webp';
+
+import ubercar2 from '../assets/ubercar2.webp';
+import ubermotorbike from '../assets/ubermotorbike.webp';
+import uberauto from '../assets/uberauto.webp';
 import { SocketContext } from '../context/SocketContext';
 import LiveTracking from './LiveTracking';
 
@@ -17,7 +17,7 @@ const Riding = () => {
   
 
 socket.on('ride-started', ride => {
-  console.log("this is after ride started", ride);
+  //console.log("this is after ride started", ride);
   setWaitingForDriver(false)
   navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
 })
@@ -26,13 +26,13 @@ socket.on('ride-started', ride => {
 
 
 socket.on('ride-ended', ride => {
-  console.log("this is after ride ended", ride);
+  //console.log("this is after ride ended", ride);
   navigate('/home') 
 })
 
 
   useEffect(() => {
-    console.log("🚀 Received ride data:", ride);
+    //console.log("🚀 Received ride data:", ride);
   }, [ride]);
 
   if (!ride) {

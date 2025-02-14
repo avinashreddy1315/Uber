@@ -1,7 +1,7 @@
 import React from 'react'
-import ubercar2 from '../../public/ubercar2.webp';
-import ubermotorbike from '../../public/ubermotorbike.webp';
-import uberauto from '../../public/uberauto.webp';
+import ubercar2 from '../assets/ubercar2.webp';
+import ubermotorbike from '../assets/ubermotorbike.webp';
+import uberauto from '../assets/ubermotorbike.webp';
 
 const LookingForDriver = (props) => {
 

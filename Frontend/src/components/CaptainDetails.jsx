@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import Random from '../../public/Random.jpg';
+import Random from '../assets/Random.jpg';
 import { CaptainDataContext } from '../context/CaptainContext';
 import axios from 'axios';
 

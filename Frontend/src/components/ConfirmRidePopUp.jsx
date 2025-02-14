@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // ✅ Import navigate
 import axios from 'axios';
-import Random_2 from '../../public/Random_2.jpg';
+import Random_2 from '../assets/Random_2.jpg';
 
 const ConfirmRidePopUP = (props) => {
   const [otp, setOtp] = useState('');

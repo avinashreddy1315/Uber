@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Random_2 from '../../public/Random_2.jpg';
+import Random_2 from '../assets/Random_2.jpg';
+
 import axios from 'axios';
 import { CaptainDataContext } from '../context/CaptainContext';
 

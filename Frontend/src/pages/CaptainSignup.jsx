@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
-import Uberlogo from '../../public/Uber_logo.png';
+import Uberlogo from '../assets/Uber_logo.png';
 import { CaptainDataContext } from '../context/CaptainContext';
 
 const CaptainSignup = () => {

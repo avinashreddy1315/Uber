@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 import ubercar2 from '../assets/ubercar2.webp';
-import ubermotorbike from '../assets/ubermotorbike.webp';
+import ubermotorbike from '../assets/Ubermotorbike.webp';
 import uberauto from '../assets/uberauto.webp';
 import { SocketContext } from '../context/SocketContext';
 import LiveTracking from './LiveTracking';

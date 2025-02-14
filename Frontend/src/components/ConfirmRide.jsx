@@ -1,6 +1,6 @@
 import React from 'react';
 import ubercar2 from '../assets/ubercar2.webp';
-import ubermotorbike from '../assets/ubermotorbike.webp';
+import ubermotorbike from '../assets/Ubermotorbike.webp';
 import uberauto from '../assets/uberauto.webp';
 
 
